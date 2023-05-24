@@ -24,7 +24,24 @@ enum ORIENTATION
     TWO_SEVENTY // 3
 };
 
+enum ADJACENCY_DIRECTIONS
+{
+    UP,
+    DOWN,
+    RIGHT,
+    LEFT,
+    UP_LEFT,
+    DOWN_LEFT,
+    UP_RIGHT,
+    DOWN_RIGHT
+};
+
+extern uint8_t ADJACENCY[9];
 extern uint64_t PRECALC_PIECES[7][4];
 extern uint64_t INSIDE; // OUTSIDE = ~INSIDE.
+
+extern uint64_t BOTTOM_ROW;
+extern uint64_t RIGHT_COLUMN;
+
 extern std::string get_binary64(uint64_t b);
 #endif /*COMMON_H_*/
