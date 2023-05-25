@@ -4,26 +4,22 @@
 
 int main()
 {
-    State* s = new State();
-    s->init();
-    s->set_piece(4, SG_426A, CANONICAL);
-    s->set_piece(1, SG_426DEF, CANONICAL);
-    s->set_piece(2, SG_426C, ONE_EIGHTY);
-
-    std::cout << s->print_pieces() << std::endl;
-    std::cout << s->print_board() << std::endl;
-    
-    auto test = s->is_legal();
-
-    if(test)
+    State* s = nullptr;
+    try
     {
-        std::cout << "Legal!" << std::endl;
+        //0 1 2 3 4 5 6 7 8
+        s = new State("-------A-", "000000030");
     }
-    else
-    {
-        std::cout << "Illegal..." << std::endl;
+    catch(std::exception& e){
+        std::cerr << e.what() << std::endl;
+        return -1;
     }
-    
+
+    //std::cout << s->print_pieces() << std::endl;
+    //std::cout << s->print_board() << std::endl;
+    s->get_legal_moves();
+
+
     delete s;
     return 0;
 }

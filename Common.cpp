@@ -4,6 +4,19 @@ uint64_t INSIDE=0x3c3c3c3c0000;
 uint64_t RIGHT_COLUMN=0xf0f0f0f0f0f0f0f;
 uint64_t BOTTOM_ROW = 0xffffffff;
 
+uint64_t SLIDING_LIMITS[4] =
+{
+    //UP
+    0xff00000000000000,
+    //DOWN
+    0xff,
+    //RIGHT
+    0x101010101010101,
+    //LEFT
+    0x8080808080808080
+};
+
+
 //CANONICAL, NINETY, ONE_EIGHTY, TWO_SEVENTY
 uint64_t PRECALC_PIECES[7][4] = {
     {0                      , 0                       , 0                       , 0                       }, // Empty
