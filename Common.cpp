@@ -47,3 +47,19 @@ std::string get_binary64(uint64_t b)
     std::bitset<64> bs(b);
     return bs.to_string();
 }
+
+extern ADJACENCY_DIRECTIONS opposite(ADJACENCY_DIRECTIONS ad)
+{
+    switch(ad)
+    {
+        case UP: return DOWN; break;
+        case DOWN: return UP; break;
+        case LEFT: return RIGHT; break;
+        case RIGHT: return LEFT; break;
+        case UP_LEFT: return DOWN_RIGHT; break;
+        case UP_RIGHT: return DOWN_LEFT; break;
+        case DOWN_LEFT: return UP_RIGHT; break;
+        case DOWN_RIGHT: return UP_LEFT; break;
+        default: return UP; break;
+    }
+}

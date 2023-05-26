@@ -46,4 +46,5 @@ extern uint64_t SLIDING_LIMITS[4];
 
 
 extern std::string get_binary64(uint64_t b);
+extern ADJACENCY_DIRECTIONS opposite(ADJACENCY_DIRECTIONS ad);
 #endif /*COMMON_H_*/

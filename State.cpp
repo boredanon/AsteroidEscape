@@ -12,6 +12,7 @@ State::State(std::string ps, std::string orientations)
 {
     pieces = new Piece*[9];
     current_empty=-1;
+    int empty_amounts = 0;
     for(unsigned int i = 0; i < 9; i++)
     {
         std::pair<int,int> piece;
@@ -19,7 +20,8 @@ State::State(std::string ps, std::string orientations)
         {
             case '-':
                 piece.first = (int)EMPTY;
-                current_empty=4;
+                current_empty=i;
+                empty_amounts++;
             break;
             case 'A':
                 piece.first = (int)SG_426A;
@@ -60,7 +62,7 @@ State::State(std::string ps, std::string orientations)
         pieces[i] = new Piece((PIECE_TYPE)piece.first, (ORIENTATION)piece.second);
     }
 
-    if(!is_legal()){
+    if(!is_legal() || empty_amounts>1 || empty_amounts == 0){
 
         for(int i = 0; i < 9; i++){
             delete pieces[i];
@@ -110,6 +112,52 @@ std::string State::print_board() const
     return s;
 }
 
+std::string State::print_board2() const
+{
+    std::string full_board;
+    std::string context_pieces[9];
+    for(int p = 0; p < 9; p++)
+    {
+        auto piece = pieces[p]->get_p();
+        auto piece_adjacencies = get_adjacencies(p);
+
+        for(const auto& p_a : piece_adjacencies)
+        {
+            auto piece_a = pieces[p_a.first]->get_p();
+            switch(p_a.second)
+            {
+                case UP:
+                    piece |= ((piece_a&BOTTOM_ROW) << 32);
+                    break;
+                case DOWN:
+                    piece |= ((piece_a&~BOTTOM_ROW) >> 32);
+                    break;
+                case LEFT:
+                    piece |= ((piece_a&RIGHT_COLUMN) << 4);
+                    break;
+                case RIGHT:
+                    piece |= ((piece_a&~RIGHT_COLUMN) >> 4);
+                    break;
+                case UP_LEFT:
+                    piece |= ((piece_a&~(~BOTTOM_ROW|~RIGHT_COLUMN)) << 36);
+                    break;
+                case DOWN_LEFT:
+                    piece |= ((piece_a&~(BOTTOM_ROW|~RIGHT_COLUMN)) >> 28);
+                    break;
+                case UP_RIGHT:
+                    piece |= ((piece_a&~(~BOTTOM_ROW|RIGHT_COLUMN)) << 28);
+                    break;
+                case DOWN_RIGHT:
+                    piece |= ((piece_a&~(BOTTOM_ROW|RIGHT_COLUMN)) >> 36);
+                    break;
+            }
+        }
+        context_pieces[p] = get_binary64(piece);
+    }
+
+    return full_board;
+}
+
 std::vector<std::pair<int, int>> State::get_adjacencies(int i) const
 {
     std::vector<std::pair<int,int>> a;
@@ -151,13 +199,45 @@ std::vector<std::pair<int, int>> State::get_adjacencies(int i) const
     return a;
 }
 
-bool State::check_collision(int i, uint64_t context) const
+void State::move(std::pair<int, int> m)
+{
+    auto dir = m.second;
+    int target=-1;
+    switch(dir)
+    {
+        case UP:
+            target=m.first-3;
+        break;
+        case DOWN:
+            target=m.first+3;
+        break;
+        case RIGHT:
+            target=m.first+1;
+        break;
+        case LEFT:
+            target=m.first-1;
+        break;
+    }
+
+    PIECE_TYPE new_type = pieces[m.first]->get_piece_type();
+    ORIENTATION new_o = pieces[m.first]->get_piece_orientation();
+    
+    pieces[target]->set_piece(new_type, new_o);
+    pieces[m.first]->set_piece(EMPTY, CANONICAL);
+    current_empty=m.first;
+}
+
+bool State::check_collision(int i, uint64_t context, int ignore) const
 {
     uint64_t collision_mask=0;
     auto adj = get_adjacencies(i);
 
     for(const auto& a : adj)
     {
+        if(a.first == ignore){
+            continue;
+        }
+
         auto piece = pieces[a.first]->get_p();
         ADJACENCY_DIRECTIONS dir = (ADJACENCY_DIRECTIONS)a.second;
 
@@ -206,7 +286,7 @@ bool State::is_legal() const
     for(int i = 0; i < 9; i++)
     {
         uint64_t context=pieces[i]->get_p();
-        if(check_collision(i, context)){
+        if(check_collision(i, context, -1)){
             return false;
         }
 
@@ -223,15 +303,15 @@ std::vector<std::pair<int,int>> State::get_legal_moves() const
 
     for(const auto& a : adj)
     {
-        if(a.second != 1){ // Diagonal moves are not allowed.
+        if(a.second > 3 || pieces[a.first]->get_p() == 0){ // Diagonal moves are not allowed.
             continue;
         }
-        //UP,DOWN,RIGHT,LEFT
 
         auto p_adj = get_adjacencies(a.first);
         auto p_bits = pieces[a.first]->get_p();
-        auto e_bits = pieces[current_empty]->get_p(); // 0
+        uint64_t e_bits = 0;
 
+        //Check for overlapping pieces, otherwise they appear "cut".
         switch(a.second)
         {
             case UP:
@@ -241,69 +321,46 @@ std::vector<std::pair<int,int>> State::get_legal_moves() const
                 e_bits = (p_bits&~BOTTOM_ROW) >> 32;
             break;
             case RIGHT:
+                e_bits = (p_bits&~RIGHT_COLUMN) >> 4;
             break;
             case LEFT:
+                e_bits = (p_bits&RIGHT_COLUMN) << 4;
             break;
         }
-
-
-
-
-        std::cout << Piece::print_as_piece(p_bits) << std::endl;
-        for(int i = 0; i < 4; i++){
-            std::cout << "Piece:" << a.first << ",";
-           // bool move_p = __builtin_popcountll(e_bits) != __builtin_popcountll(pieces[a.first]->get_p());
-            //bool move_p = (p_bits&INSIDE);
-            bool move_p = false;
+        bool collision=false;
+        for(int i = 0; i < 4; i++){ // We need to emulate the slide.
             switch(a.second)
             {
-                case UP: // Means it moves DOWN.
-                    std::cout << "UP" << std::endl;
+                case UP: // Means the piece is moving DOWN.
                     p_bits = (p_bits&~SLIDING_LIMITS[DOWN]) >> 8;
                     e_bits = ((p_bits&BOTTOM_ROW)<<32)|((e_bits&~SLIDING_LIMITS[DOWN]) >> 8);
-
                 break;
-                case DOWN: // Means it moves UP.
-                    std::cout << "DOWN" << std::endl;
+                case DOWN: // Means the piece is moving UP.
                     p_bits = (p_bits&~SLIDING_LIMITS[UP]) << 8;
-                    //if(move_p){
-                        e_bits = (((p_bits&~BOTTOM_ROW) >> 32)|((e_bits&~SLIDING_LIMITS[UP]) << 8));
-                    //}
-                    //else
-                    //{
-                    //    e_bits = (e_bits&~SLIDING_LIMITS[UP]) << 8;
-                    //}
+                    e_bits = (((p_bits&~BOTTOM_ROW) >> 32)|((e_bits&~SLIDING_LIMITS[UP]) << 8));
                 break;
-                case RIGHT: // Means it moves LEFT.
-                    std::cout << "RIGHT" << std::endl;
+                case RIGHT: // Means the piece is moving LEFT.
                     p_bits = (p_bits&~SLIDING_LIMITS[LEFT]) << 1;
-                    if(move_p){
-                        e_bits = (p_bits&~RIGHT_COLUMN) >> 4;
-                    }
-                    else
-                    {
-                        e_bits = (e_bits&~SLIDING_LIMITS[LEFT]) << 1;
-                    }
-
-
+                    e_bits = (((p_bits&~RIGHT_COLUMN) >> 4)|(e_bits&~SLIDING_LIMITS[LEFT]) << 1);
                 break;
-                case LEFT: //Means it moves RIGHT.
-                    std::cout << "LEFT" << std::endl;
+                case LEFT: //Means the piece is moving RIGHT.
                     p_bits = (p_bits&~SLIDING_LIMITS[RIGHT]) >> 1;
-                    if(move_p){
-                        e_bits = (p_bits&RIGHT_COLUMN) << 4;
-                    }
-                    else
-                    {
-                        e_bits = (e_bits&~SLIDING_LIMITS[RIGHT]) >> 1;
-                    }
+                    e_bits = ((p_bits&RIGHT_COLUMN) << 4)|((e_bits&~SLIDING_LIMITS[RIGHT]) >> 1);
                 break;
 
             }
-            std::cout << Piece::print_as_piece(p_bits) << std::endl;
-            std::cout << Piece::print_as_piece(e_bits) << std::endl;
+            collision = check_collision(a.first, p_bits, current_empty);
+            collision = check_collision(current_empty, e_bits, a.first);
+            if(collision){
+                std::cout << "pieces " << a.first << ", " << current_empty << " found collision in direction " << a.second <<  std::endl;
+                break;
+            }
+            //std::cout << Piece::print_as_piece(p_bits) << std::endl;
+            //std::cout << Piece::print_as_piece(e_bits) << std::endl;
         }
-        std::cout << "-----" << std::endl;
+        if(!collision){
+            v.push_back(std::make_pair(a.first, opposite((ADJACENCY_DIRECTIONS)a.second)));
+        }
     }
     return v;
 }

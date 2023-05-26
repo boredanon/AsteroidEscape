@@ -15,12 +15,29 @@ uint64_t Piece::get_p() const
     return p;
 }
 
+PIECE_TYPE Piece::get_piece_type() const
+{
+    return p_type;
+}
+
+ORIENTATION Piece::get_piece_orientation() const
+{
+    return o;
+}
+
 void Piece::set_piece(PIECE_TYPE pt, ORIENTATION po)
 {
     p_type = pt;
     o = po;
 
     p = PRECALC_PIECES[pt][po];
+}
+
+void Piece::set_piece(Piece* new_p)
+{
+    p_type = new_p->p_type;
+    o = new_p->o;
+    p = PRECALC_PIECES[p_type][o];
 }
 
 std::string Piece::print_as_piece(uint64_t t)
