@@ -21,7 +21,9 @@ class State
         Piece* get_empty() const;
         std::vector<std::pair<int,int>> get_legal_moves() const;
         bool is_legal() const;
+        bool can_slide(int from, int to, int direction) const;
         void move(std::pair<int,int> m);
+        bool is_goal() const;
         std::string print_pieces() const;
         std::string print_board() const;
         std::string print_board2() const;

@@ -36,7 +36,7 @@ enum ADJACENCY_DIRECTIONS
     DOWN_RIGHT
 };
 
-extern uint8_t ADJACENCY[9];
+extern uint8_t ADJACENCY[12];
 extern uint64_t PRECALC_PIECES[7][4];
 extern uint64_t INSIDE; // OUTSIDE = ~INSIDE.
 

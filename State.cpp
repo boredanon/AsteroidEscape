@@ -2,18 +2,20 @@
 
 State::State()
 {
-    pieces = new Piece*[9];
-    for(int i = 0; i < 9; i++){
+    pieces = new Piece*[10];
+    for(int i = 0; i < 10; i++){
         pieces[i] = new Piece();
     }
 }
 
 State::State(std::string ps, std::string orientations)
 {
-    pieces = new Piece*[9];
+    pieces = new Piece*[12];
     current_empty=-1;
     int empty_amounts = 0;
-    for(unsigned int i = 0; i < 9; i++)
+
+    unsigned int i = 0;
+    for(i = 0; i < 9; i++)
     {
         std::pair<int,int> piece;
         switch(ps[i])
@@ -62,9 +64,13 @@ State::State(std::string ps, std::string orientations)
         pieces[i] = new Piece((PIECE_TYPE)piece.first, (ORIENTATION)piece.second);
     }
 
+    for(; i < 12; i++){
+        pieces[i] = new Piece(EMPTY, CANONICAL); //Goal piece is Piece[10].
+    }
+
     if(!is_legal() || empty_amounts>1 || empty_amounts == 0){
 
-        for(int i = 0; i < 9; i++){
+        for(int i = 0; i < 12; i++){
             delete pieces[i];
         }
         delete [] pieces;
@@ -271,6 +277,11 @@ bool State::check_collision(int i, uint64_t context, int ignore) const
         }
 
         if(collision_mask&context){
+            //std::cout << "Piece " << i << " is colliding with piece " << a.first << " in direction " << a.second << std::endl;
+
+            //std::cout << Piece::print_as_piece(context) << std::endl;
+            //std::cout << Piece::print_as_piece(collision_mask) << std::endl;
+
             return true;
         }
     }
@@ -295,80 +306,100 @@ bool State::is_legal() const
     return true;
 }
 
+bool State::can_slide(int from, int to, int direction) const
+{
+    auto p_bits = pieces[from]->get_p();
+    uint64_t e_bits=0;
+    //Check for overlapping pieces, otherwise they appear "cut".
+    switch(direction)
+    {
+        case UP:
+            e_bits = (p_bits&BOTTOM_ROW)<<32;
+        break;
+        case DOWN:
+            e_bits = (p_bits&~BOTTOM_ROW) >> 32;
+        break;
+        case RIGHT:
+            e_bits = (p_bits&~RIGHT_COLUMN) >> 4;
+        break;
+        case LEFT:
+            e_bits = (p_bits&RIGHT_COLUMN) << 4;
+        break;
+    }
+
+    for(int index = 0; index < 4; index++){ // We need to emulate the slide.
+        switch(direction)
+        {
+            case UP: // Means the piece is moving DOWN.
+                p_bits = (p_bits&~SLIDING_LIMITS[DOWN]) >> 8;
+                e_bits = ((p_bits&BOTTOM_ROW)<<32)|((e_bits&~SLIDING_LIMITS[DOWN]) >> 8);
+            break;
+            case DOWN: // Means the piece is moving UP.
+                p_bits = (p_bits&~SLIDING_LIMITS[UP]) << 8;
+                e_bits = (((p_bits&~BOTTOM_ROW) >> 32)|((e_bits&~SLIDING_LIMITS[UP]) << 8));
+            break;
+            case RIGHT: // Means the piece is moving LEFT.
+                p_bits = (p_bits&~SLIDING_LIMITS[LEFT]) << 1;
+                e_bits = (((p_bits&~RIGHT_COLUMN) >> 4)|(e_bits&~SLIDING_LIMITS[LEFT]) << 1);
+            break;
+            case LEFT: //Means the piece is moving RIGHT.
+                p_bits = (p_bits&~SLIDING_LIMITS[RIGHT]) >> 1;
+                e_bits = ((p_bits&RIGHT_COLUMN) << 4)|((e_bits&~SLIDING_LIMITS[RIGHT]) >> 1);
+            break;
+
+        }
+        bool collision_1 = check_collision(from, p_bits, to);
+        bool collision_2 = check_collision(to, e_bits, from);
+        if(collision_1 || collision_2){
+            //std::cout << "pieces " << a.first << ", " << current_empty << " found collision in direction " << a.second <<  std::endl;
+            return false;
+        }
+        //std::cout << Piece::print_as_piece(p_bits) << std::endl;
+        //std::cout << Piece::print_as_piece(e_bits) << std::endl;
+    }
+    return true;
+}
+
 std::vector<std::pair<int,int>> State::get_legal_moves() const
 {
     std::vector<std::pair<int,int>> v;
     std::cout << "Current empty piece is: " << current_empty << std::endl;
-    auto adj = get_adjacencies(current_empty);
 
-    for(const auto& a : adj)
-    {
-        if(a.second > 3 || pieces[a.first]->get_p() == 0){ // Diagonal moves are not allowed.
+    //Movements.
+    auto adj = get_adjacencies(current_empty);
+    for(const auto& a : adj){
+        if(a.second > 3 || !pieces[a.first]->get_p()){
             continue;
         }
 
-        auto p_adj = get_adjacencies(a.first);
-        auto p_bits = pieces[a.first]->get_p();
-        uint64_t e_bits = 0;
-
-        //Check for overlapping pieces, otherwise they appear "cut".
-        switch(a.second)
-        {
-            case UP:
-                e_bits = (p_bits&BOTTOM_ROW)<<32;
-            break;
-            case DOWN:
-                e_bits = (p_bits&~BOTTOM_ROW) >> 32;
-            break;
-            case RIGHT:
-                e_bits = (p_bits&~RIGHT_COLUMN) >> 4;
-            break;
-            case LEFT:
-                e_bits = (p_bits&RIGHT_COLUMN) << 4;
-            break;
-        }
-        bool collision=false;
-        for(int i = 0; i < 4; i++){ // We need to emulate the slide.
-            switch(a.second)
-            {
-                case UP: // Means the piece is moving DOWN.
-                    p_bits = (p_bits&~SLIDING_LIMITS[DOWN]) >> 8;
-                    e_bits = ((p_bits&BOTTOM_ROW)<<32)|((e_bits&~SLIDING_LIMITS[DOWN]) >> 8);
-                break;
-                case DOWN: // Means the piece is moving UP.
-                    p_bits = (p_bits&~SLIDING_LIMITS[UP]) << 8;
-                    e_bits = (((p_bits&~BOTTOM_ROW) >> 32)|((e_bits&~SLIDING_LIMITS[UP]) << 8));
-                break;
-                case RIGHT: // Means the piece is moving LEFT.
-                    p_bits = (p_bits&~SLIDING_LIMITS[LEFT]) << 1;
-                    e_bits = (((p_bits&~RIGHT_COLUMN) >> 4)|(e_bits&~SLIDING_LIMITS[LEFT]) << 1);
-                break;
-                case LEFT: //Means the piece is moving RIGHT.
-                    p_bits = (p_bits&~SLIDING_LIMITS[RIGHT]) >> 1;
-                    e_bits = ((p_bits&RIGHT_COLUMN) << 4)|((e_bits&~SLIDING_LIMITS[RIGHT]) >> 1);
-                break;
-
-            }
-            collision = check_collision(a.first, p_bits, current_empty);
-            collision = check_collision(current_empty, e_bits, a.first);
-            if(collision){
-                std::cout << "pieces " << a.first << ", " << current_empty << " found collision in direction " << a.second <<  std::endl;
-                break;
-            }
-            //std::cout << Piece::print_as_piece(p_bits) << std::endl;
-            //std::cout << Piece::print_as_piece(e_bits) << std::endl;
-        }
-        if(!collision){
+        if(can_slide(a.first, current_empty, a.second)){
             v.push_back(std::make_pair(a.first, opposite((ADJACENCY_DIRECTIONS)a.second)));
+        }
+    }
+
+    //This checks if the spaceship can exit.
+    adj = get_adjacencies(10); // Goal piece.
+    for(const auto& a : adj)
+    {
+        if(a.second > 3 || !pieces[a.first]->get_p()){
+            continue;
+        }
+        if(pieces[a.first]->get_piece_type() == SG_426A){
+            if(can_slide(a.first, 10, a.second)){
+                v.push_back(std::make_pair(a.first, opposite((ADJACENCY_DIRECTIONS)a.second)));
+            }
         }
     }
     return v;
 }
 
+bool State::is_goal() const{
+    return pieces[10]->get_piece_type() == SG_426A;
+}
 
 State::~State()
 {
-    for(int i = 0; i < 9; i++){
+    for(int i = 0; i < 12; i++){
         delete pieces[i];
     }
     delete [] pieces;
