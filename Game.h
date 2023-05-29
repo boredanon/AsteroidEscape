@@ -14,11 +14,20 @@ class Game
     std::vector<int> reconstruct_path(State* goal);
     public:
         Game(std::string positions, std::string orientations);
-        void BFS();
-        void Astar();
-        void IDAstar();
+        bool BFS();
+        bool Astar();
+        bool IDAstar();
         ~Game();
 
+};
+
+
+struct Comparator
+{
+    bool operator()(const State* a, const State* b) const
+    {
+        return a->get_f() > b->get_f();
+    }
 };
 
 #endif /*GAME_H_*/

@@ -3,6 +3,7 @@
 State::State()
 {
     pieces = new Piece*[12];
+    g=0;
     for(int i = 0; i < 12; i++){
         pieces[i] = new Piece();
     }
@@ -13,6 +14,7 @@ State::State(std::string ps, std::string orientations)
     pieces = new Piece*[12];
     current_empty=-1;
     int empty_amounts = 0;
+    g=0;
 
     unsigned int i = 0;
     for(i = 0; i < 9; i++)
@@ -81,11 +83,27 @@ State::State(std::string ps, std::string orientations)
 State::State(const State& s)
 {
     pieces = new Piece*[12];
+    g = s.g;
     current_empty = s.current_empty;
     for(int i = 0; i < 12; i++)
     {
         pieces[i] = new Piece(s.pieces[i]->get_piece_type(), s.pieces[i]->get_piece_orientation());
     }
+}
+
+int State::get_f() const
+{
+    return g + h;
+}
+
+int State::get_h() const // Heuristic
+{
+    return 0;
+}
+
+int State::get_g() const
+{
+    return g;
 }
 
 Piece* State::get_empty() const{

@@ -11,7 +11,7 @@ std::vector<int> Game::reconstruct_path(State* goal)
 
     auto t = goal;
 
-    while(visited_map[t].first != nullptr)
+    while(!std::equal_to<State*>{}(t, s))
     {
         p.push_back(visited_map[t].second);
         t = visited_map[t].first;
@@ -20,7 +20,7 @@ std::vector<int> Game::reconstruct_path(State* goal)
     return p;
 }
 
-void Game::BFS()
+bool Game::BFS()
 {
     std::cout << "Running BFS..." << std::endl;
     
@@ -49,8 +49,9 @@ void Game::BFS()
             }
             std::cout << std::endl;
 
-            delete st;
-            break;
+
+            //delete st;
+            return true;
         }
 
         auto moves = st->get_legal_moves();
@@ -59,11 +60,13 @@ void Game::BFS()
             auto copy = new State(*st);
             copy->move(m);
 
-            if(set.count(copy) <= 0){ // Is not visited.
+            if(set.count(copy) <= 0){
                 queue.push(copy);
                 set.insert(copy);
 
-                visited_map[copy] = std::make_pair(st, m.second);
+                if(visited_map.find(copy) == visited_map.end()){
+                    visited_map[copy] = std::make_pair(st, m.second);
+                }
             }
             else
             {
@@ -73,7 +76,84 @@ void Game::BFS()
         //delete st;
         //return;
     }
-    delete copy;
+    //delete copy;
+    return false;
+}
+
+bool Game::Astar()
+{
+    std::cout << "Running A*..." << std::endl;
+
+
+    std::unordered_set<State*> open_s;
+    std::priority_queue<State*, std::vector<State*>, Comparator> open;
+
+    std::unordered_set<State*> closed;
+
+    auto copy = new State(*s);
+    open_s.insert(copy);
+    open.push(copy);
+    visited_map[s] = std::make_pair(s, -1);
+
+    while(!open.empty())
+    {
+        auto st = open.top();
+        open_s.erase(st);
+        open.pop();
+
+        //std::cout << st->print_board() << std::endl;
+        if(st->is_goal()){
+            std::cout << "Goal found!" << std::endl;
+            std::vector<int> path = reconstruct_path(st);
+
+            std::cout << "Solution: ";
+            for(int i = path.size()-1; i >= 0; i--){
+                std::cout << print_direction(path[i]) << " ";
+            }
+            std::cout << std::endl;
+
+            //delete st;
+            return true;
+        }
+
+        auto moves = st->get_legal_moves();
+        for(const auto& m: moves)
+        {
+            auto copy = new State(*st);
+            copy->move(m);
+            //std::cout << copy->print_board() << std::endl;
+
+            auto new_g = st->get_g() + 1;
+
+            auto open_it = open_s.find(copy);
+            auto closed_it = closed.find(copy);
+
+            if(open_it != open_s.end()){
+                if(copy->get_g() <= new_g){
+                    continue;
+                }
+            }
+            if(closed_it != closed.end()){
+                
+                if((copy->get_g() <= new_g)){
+                    continue;
+                }
+
+                closed.erase(copy);
+            }
+
+            copy->g = new_g;
+            copy->h = 0;
+            if(visited_map.find(copy) == visited_map.end())
+                visited_map[copy] = std::make_pair(st, m.second);
+            
+            open_s.insert(copy);
+            open.push(copy);
+        }
+        closed.insert(st);
+        //return;
+    }
+    return false;
 }
 
 Game::~Game()

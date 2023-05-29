@@ -46,6 +46,10 @@ int main(int argc, char** argv)
     if(algorithm == "bfs"){
         g->BFS();
     }
+    else if(algorithm == "Astar")
+    {
+        g->Astar();
+    }
 
     delete g;
     //delete s;
