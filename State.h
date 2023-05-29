@@ -14,6 +14,7 @@ class State
         std::vector<std::pair<int, int>> get_adjacencies(int i) const;
     public:
         State();
+        State(const State& s);
         State(std::string pieces, std::string orientations);
         void init();
         void set_piece(int index, PIECE_TYPE pt, ORIENTATION po);

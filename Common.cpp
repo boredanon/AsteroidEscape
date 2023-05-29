@@ -67,3 +67,21 @@ extern ADJACENCY_DIRECTIONS opposite(ADJACENCY_DIRECTIONS ad)
         default: return UP; break;
     }
 }
+
+extern std::string print_direction(int dir)
+{
+    std::string s="";
+    switch(dir)
+    {
+        case UP: s+="UP"; break;
+        case DOWN: s+="DOWN"; break;
+        case LEFT: s+="LEFT"; break;
+        case RIGHT: s+="RIGHT"; break;
+        case UP_LEFT: s+= "UP_LEFT"; break;
+        case UP_RIGHT: s+= "UP_RIGHT"; break;
+        case DOWN_LEFT: s+= "DOWN_LEFT"; break;
+        case DOWN_RIGHT: s+= "DOWN_RIGHT"; break;
+        default : s+="UNIDENTIFIED"; break;
+    }
+    return s;
+}

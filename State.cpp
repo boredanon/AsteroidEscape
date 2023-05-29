@@ -2,8 +2,8 @@
 
 State::State()
 {
-    pieces = new Piece*[10];
-    for(int i = 0; i < 10; i++){
+    pieces = new Piece*[12];
+    for(int i = 0; i < 12; i++){
         pieces[i] = new Piece();
     }
 }
@@ -75,6 +75,16 @@ State::State(std::string ps, std::string orientations)
         }
         delete [] pieces;
         throw std::runtime_error("Illegal board.");
+    }
+}
+
+State::State(const State& s)
+{
+    pieces = new Piece*[12];
+    current_empty = s.current_empty;
+    for(int i = 0; i < 12; i++)
+    {
+        pieces[i] = new Piece(s.pieces[i]->get_piece_type(), s.pieces[i]->get_piece_orientation());
     }
 }
 
@@ -363,7 +373,7 @@ bool State::can_slide(int from, int to, int direction) const
 std::vector<std::pair<int,int>> State::get_legal_moves() const
 {
     std::vector<std::pair<int,int>> v;
-    std::cout << "Current empty piece is: " << current_empty << std::endl;
+    //std::cout << "Current empty piece is: " << current_empty << std::endl;
 
     //Movements.
     auto adj = get_adjacencies(current_empty);
@@ -403,5 +413,5 @@ State::~State()
         delete pieces[i];
     }
     delete [] pieces;
-    std::cout << "Delete state." << std::endl;
+    //std::cout << "Delete state." << std::endl;
 }
