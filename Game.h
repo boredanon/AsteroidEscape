@@ -10,8 +10,13 @@
 class Game
 {
     State* s;
+    State* goal=nullptr;
     std::unordered_map<State*, std::pair<State*, int>> visited_map;
     std::vector<int> reconstruct_path(State* goal);
+
+    int doneIDAstar;
+
+    int searchIDAstar(State* s, int g, int bound);
     public:
         Game(std::string positions, std::string orientations);
         bool BFS();

@@ -50,7 +50,10 @@ int main(int argc, char** argv)
     {
         g->Astar();
     }
-
+    else if(algorithm == "IDAstar"){
+        g->IDAstar();
+    }
+    
     delete g;
     //delete s;
     return 0;

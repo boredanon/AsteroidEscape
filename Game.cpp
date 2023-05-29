@@ -49,8 +49,8 @@ bool Game::BFS()
             }
             std::cout << std::endl;
 
-
-            //delete st;
+            delete st;
+            delete copy;
             return true;
         }
 
@@ -61,6 +61,8 @@ bool Game::BFS()
             copy->move(m);
 
             if(set.count(copy) <= 0){
+                //auto to_push = new State(*copy);
+
                 queue.push(copy);
                 set.insert(copy);
 
@@ -72,11 +74,19 @@ bool Game::BFS()
             {
                 delete copy;
             }
+            //delete copy;
         }
         //delete st;
         //return;
     }
-    //delete copy;
+    delete copy;
+
+    while(!queue.empty()){
+        auto p = queue.front();
+        queue.pop();
+        delete p;
+    }
+
     return false;
 }
 
@@ -112,7 +122,8 @@ bool Game::Astar()
             }
             std::cout << std::endl;
 
-            //delete st;
+            delete st;
+            delete copy;
             return true;
         }
 
@@ -153,10 +164,85 @@ bool Game::Astar()
         closed.insert(st);
         //return;
     }
+    delete copy;
     return false;
 }
 
+bool Game::IDAstar()
+{
+    std::cout << "Running IDA*..." << std::endl;
+
+    auto bound = s->get_h();
+    visited_map[s] = std::make_pair(s, -1);
+
+    int t=-1;
+    doneIDAstar=false;
+    while(true)
+    {
+        t = searchIDAstar(s, 0, bound);
+        
+        if(doneIDAstar){
+            std::cout << "Found solution." << std::endl;
+            std::vector<int> path = reconstruct_path(goal);
+
+            std::cout << "Solution: ";
+            for(int i = path.size()-1; i >= 0; i--){
+                std::cout << print_direction(path[i]) << " ";
+            }
+            std::cout << std::endl;
+            
+            return true;
+        }
+        bound = t;
+    }
+
+    return false;
+}
+
+int Game::searchIDAstar(State* s, int g, int bound)
+{
+    //std::cout << "Calling search..." << std::endl;
+    if(s->is_goal()){
+        goal=new State(*s);
+        //std::vector<int> path = reconstruct_path(s);
+        doneIDAstar=true;
+        return 0;
+    }
+
+    auto moves = s->get_legal_moves();
+
+    int min = 10000000;
+    for(const auto& m : moves)
+    {
+        auto copy = new State(*s);
+        copy->move(m);
+
+        auto h = copy->get_h();
+        int t;
+        if(h <= bound-1)
+            t = 1 + searchIDAstar(copy, g+1, bound-1);
+        else
+            t = 1 + h;
+        
+        if(doneIDAstar){
+            visited_map[copy] = std::make_pair(s, m.second);
+            //std::cout << print_direction(m.second) << std::endl;
+            return t;
+        }
+
+        if(t < min){
+            min = t;
+        }
+    }
+
+    return min;
+}
+
+
 Game::~Game()
 {
+    if(goal != nullptr){
+        delete goal;
+    }
     delete s;
 }
