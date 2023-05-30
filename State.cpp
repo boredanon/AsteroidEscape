@@ -259,6 +259,7 @@ void State::move(std::pair<int, int> m)
     pieces[target]->set_piece(new_type, new_o);
     pieces[m.first]->set_piece(EMPTY, CANONICAL);
     current_empty=m.first;
+    g++;
 }
 
 bool State::check_collision(int i, uint64_t context, int ignore) const

@@ -27,11 +27,11 @@ bool Game::BFS()
     std::unordered_set<State*> set;
     std::queue<State*> queue;
 
-    State* copy = new State(*s);
-    set.insert(copy); 
-    queue.push(copy);
+    State* c = new State(*s);
+    set.insert(c); 
+    queue.push(c);
 
-    visited_map[s] = std::make_pair(s, -1);
+    visited_map[c] = std::make_pair(s, -1);
     while(!queue.empty())
     {
         auto st = queue.front();
@@ -49,8 +49,9 @@ bool Game::BFS()
             }
             std::cout << std::endl;
 
-            delete st;
-            delete copy;
+            //delete st;
+            //delete copy;
+
             return true;
         }
 
@@ -59,33 +60,40 @@ bool Game::BFS()
         {
             auto copy = new State(*st);
             copy->move(m);
-
-            if(set.count(copy) <= 0){
-                //auto to_push = new State(*copy);
-
-                queue.push(copy);
-                set.insert(copy);
-
-                if(visited_map.find(copy) == visited_map.end()){
-                    visited_map[copy] = std::make_pair(st, m.second);
-                }
+            
+            if(visited_map.find(copy) == visited_map.end()){
+                visited_map[copy] = std::make_pair(st, m.second);
             }
             else
             {
                 delete copy;
+                continue;
             }
+
+            if(set.count(copy) <= 0){
+                //auto to_push = new State(*copy);
+                queue.push(copy);
+                set.insert(copy);
+            }
+            else
+            {
+                //std::cout << "yeee" << std::endl;
+                //delete copy;
+            }
+
+       
             //delete copy;
         }
         //delete st;
         //return;
     }
-    delete copy;
+    //delete copy;
 
-    while(!queue.empty()){
+    /*while(!queue.empty()){
         auto p = queue.front();
         queue.pop();
         delete p;
-    }
+    }*/
 
     return false;
 }
@@ -122,8 +130,8 @@ bool Game::Astar()
             }
             std::cout << std::endl;
 
-            delete st;
-            delete copy;
+            //delete st;
+            //delete copy;
             return true;
         }
 
@@ -154,7 +162,8 @@ bool Game::Astar()
             }
 
             copy->g = new_g;
-            copy->h = 0;
+            copy->h = copy->get_h();
+
             if(visited_map.find(copy) == visited_map.end())
                 visited_map[copy] = std::make_pair(st, m.second);
             
@@ -164,7 +173,7 @@ bool Game::Astar()
         closed.insert(st);
         //return;
     }
-    delete copy;
+    //delete copy;
     return false;
 }
 
@@ -192,7 +201,9 @@ bool Game::IDAstar()
             std::cout << std::endl;
             
             return true;
-        }
+        }/*else{
+            break;
+        }*/
         bound = t;
     }
 
@@ -215,20 +226,23 @@ int Game::searchIDAstar(State* s, int g, int bound)
     for(const auto& m : moves)
     {
         auto copy = new State(*s);
-        copy->move(m);
-
+        copy->move(m); 
+        
         auto h = copy->get_h();
         int t;
-        if(h <= bound-1)
-            t = 1 + searchIDAstar(copy, g+1, bound-1);
+
+        if(copy->get_f() <= bound)
+            t = 1 + searchIDAstar(copy, g+1, bound);
         else
             t = 1 + h;
         
-        if(doneIDAstar){
+        if(visited_map.find(copy) == visited_map.end())
             visited_map[copy] = std::make_pair(s, m.second);
+
+        if(doneIDAstar){
             //std::cout << print_direction(m.second) << std::endl;
             return t;
-        }
+        }       
 
         if(t < min){
             min = t;
@@ -241,8 +255,27 @@ int Game::searchIDAstar(State* s, int g, int bound)
 
 Game::~Game()
 {
-    if(goal != nullptr){
+
+    //visited_map<State*, std::pair<State*,int>>
+
+    std::cout << visited_map.size() << std::endl;
+    
+    for(auto it = visited_map.begin(); it != visited_map.end(); it++){
+        std::cout << it->first->print_board() << std::endl;
+        delete it->first;
+        //if(it->second.first != nullptr)
+            //delete it->second.first;
+        //visited_map.erase(it);
+    }
+    visited_map.clear();
+
+    std::cout << visited_map.size() << std::endl;
+
+    delete s;
+
+
+    /*if(goal != nullptr){
         delete goal;
     }
-    delete s;
+    delete s;*/
 }
