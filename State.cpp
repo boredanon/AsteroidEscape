@@ -29,6 +29,7 @@ State::State(std::string ps, std::string orientations)
             break;
             case 'A':
                 piece.first = (int)SG_426A;
+                current_ship=i;
             break;
             case 'B':
                 piece.first = (int)SG_426B;
@@ -78,13 +79,43 @@ State::State(std::string ps, std::string orientations)
         delete [] pieces;
         throw std::runtime_error("Illegal board.");
     }
+
+    h = calculateH();
+}
+
+int State::calculateH(){
+    int calculated_h = 0;
+
+    // Solved board doesn't need calculations.
+    if(pieces[GOAL_POSITION]->get_piece_type() == SG_426A)
+    {
+        return 0;
+    }
+
+    //If it is on the correct column, it is AT LEAST 1 move to reach goal.
+    if(current_ship%3 == 1){
+        calculated_h+=1;
+    }else{ // If not it is at least 2 moves to reach goal.
+        calculated_h+=2;
+    }
+
+    if(current_ship/3 == 2){
+        calculated_h+=1;
+    }
+    else{
+        calculated_h+=2;
+    }
+
+    return calculated_h;
 }
 
 State::State(const State& s)
 {
     pieces = new Piece*[12];
     g = s.g;
+    h = s.h;
     current_empty = s.current_empty;
+    current_ship = s.current_ship;
     for(int i = 0; i < 12; i++)
     {
         pieces[i] = new Piece(s.pieces[i]->get_piece_type(), s.pieces[i]->get_piece_orientation());
@@ -98,7 +129,7 @@ int State::get_f() const
 
 int State::get_h() const // Heuristic
 {
-    return 0;
+    return h;
 }
 
 int State::get_g() const
@@ -256,10 +287,15 @@ void State::move(std::pair<int, int> m)
     PIECE_TYPE new_type = pieces[m.first]->get_piece_type();
     ORIENTATION new_o = pieces[m.first]->get_piece_orientation();
     
+    if(new_type == SG_426A){
+        current_ship = target;
+    }
+
     pieces[target]->set_piece(new_type, new_o);
     pieces[m.first]->set_piece(EMPTY, CANONICAL);
     current_empty=m.first;
     g++;
+    h=calculateH();
 }
 
 bool State::check_collision(int i, uint64_t context, int ignore) const
@@ -306,10 +342,12 @@ bool State::check_collision(int i, uint64_t context, int ignore) const
         }
 
         if(collision_mask&context){
-            //std::cout << "Piece " << i << " is colliding with piece " << a.first << " in direction " << a.second << std::endl;
+            /*std::cout << "Piece " << i << " is colliding with piece " << a.first << " in direction " << a.second << std::endl;
 
-            //std::cout << Piece::print_as_piece(context) << std::endl;
-            //std::cout << Piece::print_as_piece(collision_mask) << std::endl;
+            std::cout << Piece::print_as_piece(context) << std::endl;
+            std::cout << Piece::print_as_piece(collision_mask) << std::endl;
+
+            std::cout << "Collision:\n" << Piece::print_as_piece(collision_mask|context) << std::endl;*/
 
             return true;
         }
@@ -423,7 +461,7 @@ std::vector<std::pair<int,int>> State::get_legal_moves() const
 }
 
 bool State::is_goal() const{
-    return pieces[10]->get_piece_type() == SG_426A;
+    return pieces[GOAL_POSITION]->get_piece_type() == SG_426A;
 }
 
 State::~State()

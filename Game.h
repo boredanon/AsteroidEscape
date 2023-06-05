@@ -19,6 +19,7 @@ class Game
     int searchIDAstar(State* s, int g, int bound);
     public:
         Game(std::string positions, std::string orientations);
+        std::string print_board() const;
         bool BFS();
         bool Astar();
         bool IDAstar();

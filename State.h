@@ -11,11 +11,13 @@ class State
     private:
         Piece** pieces;
         int current_empty;
+        int current_ship;
         bool check_collision(int i, uint64_t context, int ignore) const; //Ignore is used mid-movement.
         std::vector<std::pair<int, int>> get_adjacencies(int i) const;
+        int calculateH();
     public:
         int g;
-        int h=0;
+        int h;
         State();
         State(const State& s);
         State(std::string pieces, std::string orientations);

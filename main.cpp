@@ -35,7 +35,7 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    //std::cout << s->print_board() << std::endl;
+    std::cout << g->print_board() << std::endl;
     //auto moves = s->get_legal_moves();
     /*for(const auto& m : moves)
     {
