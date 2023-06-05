@@ -36,6 +36,15 @@ enum ADJACENCY_DIRECTIONS
     DOWN_RIGHT
 };
 
+enum HEURISTIC
+{
+    ZERO,
+    TWOONE,
+    OBSTACLES0,
+    OBSTACLES1
+};
+
+extern HEURISTIC heuristic;
 extern uint8_t ADJACENCY[12];
 extern uint64_t PRECALC_PIECES[7][4];
 extern uint64_t INSIDE; // OUTSIDE = ~INSIDE.
@@ -44,6 +53,8 @@ extern uint64_t BOTTOM_ROW;
 extern uint64_t RIGHT_COLUMN;
 extern uint64_t SLIDING_LIMITS[4];
 extern int GOAL_POSITION;
+extern int HEIGHT;
+extern int WIDTH;
 
 
 extern std::string get_binary64(uint64_t b);

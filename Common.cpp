@@ -1,6 +1,9 @@
 #include "Common.h"
 
 int GOAL_POSITION = 10;
+int HEIGHT = 3;
+int WIDTH = 3;
+HEURISTIC heuristic;
 uint64_t INSIDE=0x3c3c3c3c0000;
 uint64_t RIGHT_COLUMN=0xf0f0f0f0f0f0f0f;
 uint64_t BOTTOM_ROW = 0xffffffff;

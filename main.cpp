@@ -16,6 +16,7 @@ int main(int argc, char** argv)
     {
         auto file_name = argv[1];
         algorithm = std::string(argv[2]);
+        std::transform(algorithm.begin(), algorithm.end(), algorithm.begin(), ::toupper);
         std::ifstream file(file_name);
 
         if(!file.is_open()){
@@ -42,15 +43,33 @@ int main(int argc, char** argv)
         std::cout << "Piece " << m.first << " in direction " << m.second << std::endl;
     }*/
 
+    if(argc > 3){
+        std::string h(argv[3]);
+        std::transform(h.begin(), h.end(), h.begin(), ::toupper);
+        if(h == "ZERO"){
+            heuristic = ZERO;
+        }
+        else if(h == "TWOONE"){
+            heuristic = TWOONE;
+        }
+        else if(h == "OBSTACLES0"){
+            heuristic = OBSTACLES0;
+        }
+        else if(h == "OBSTACLES1"){
+            heuristic = OBSTACLES1;
+        }
+    }else{
+        heuristic = ZERO;
+    }
 
-    if(algorithm == "bfs"){
+    if(algorithm == "BFS"){
         g->BFS();
     }
-    else if(algorithm == "Astar")
+    else if(algorithm == "ASTAR")
     {
         g->Astar();
     }
-    else if(algorithm == "IDAstar"){
+    else if(algorithm == "IDASTAR"){
         g->IDAstar();
     }
     

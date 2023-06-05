@@ -35,6 +35,7 @@ bool Game::BFS()
     State* c = new State(*s);
     set.insert(c); 
     queue.push(c);
+    int count=0;
 
     visited_map[c] = std::make_pair(s, -1);
     while(!queue.empty())
@@ -42,7 +43,7 @@ bool Game::BFS()
         auto st = queue.front();
         queue.pop();
         set.erase(st);
-
+        count++;
         if(st->is_goal())
         {
             std::cout << "Goal found!" << std::endl;
@@ -54,6 +55,7 @@ bool Game::BFS()
             }
             std::cout << std::endl;
             std::cout << "Length: " << path.size() << std::endl;
+            std::cout << "Nodes visited: " << count << std::endl;
 
             return true;
         }
@@ -114,6 +116,9 @@ bool Game::Astar()
                 std::cout << print_direction(path[i]) << " ";
             }
             std::cout << std::endl;
+            std::cout << "Length: " << path.size() << std::endl;
+            std::cout << "Open list nodes: " << open.size() << std::endl;
+            std::cout << "Closed list nodes: " << closed.size() << std::endl;
 
             //delete st;
             //delete copy;

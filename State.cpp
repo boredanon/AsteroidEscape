@@ -86,6 +86,10 @@ State::State(std::string ps, std::string orientations)
 int State::calculateH(){
     int calculated_h = 0;
 
+    if(heuristic==ZERO){
+        return calculated_h;
+    }
+    //return 0;
     // Solved board doesn't need calculations.
     if(pieces[GOAL_POSITION]->get_piece_type() == SG_426A)
     {
@@ -105,6 +109,46 @@ int State::calculateH(){
     else{
         calculated_h+=2;
     }
+
+    if(heuristic==TWOONE){
+        return calculated_h;
+    }
+
+    auto adj = get_adjacencies(GOAL_POSITION);
+    for(const auto& a : adj)
+    {
+        if(a.second > 3 || !pieces[a.first]->get_p()){
+            continue;
+        }
+
+        if(pieces[a.first]->get_piece_type() != SG_426A){
+            calculated_h+=1;
+        }
+    }
+
+    if(heuristic == OBSTACLES0){
+        return calculated_h;
+    }
+
+    for(const auto& a : adj)
+    {
+        if(a.second > 3 || !pieces[a.first]->get_p()){
+            continue;
+        }
+
+        auto adj_2 = get_adjacencies(a.first);
+        for(const auto& a_2 : adj_2)
+        {
+            if(a_2.first == a.first || a_2.second > 3 || !pieces[a_2.first]->get_p()){
+                continue;
+            }
+
+            if(pieces[a_2.first]->get_piece_type() != SG_426A){
+                calculated_h += 1;
+            }
+        }
+    }
+
 
     return calculated_h;
 }
@@ -234,13 +278,13 @@ std::vector<std::pair<int, int>> State::get_adjacencies(int i) const
         switch(d)
         {
             case 1:
-                a.push_back(std::make_pair(i+4, (int)DOWN_RIGHT));
+                a.push_back(std::make_pair(i+WIDTH+1, (int)DOWN_RIGHT));
             break;
             case 2:
-                a.push_back(std::make_pair(i+3, (int)DOWN));
+                a.push_back(std::make_pair(i+WIDTH, (int)DOWN));
             break;
             case 4:
-                a.push_back(std::make_pair(i+2, (int)DOWN_LEFT));
+                a.push_back(std::make_pair(i+WIDTH-1, (int)DOWN_LEFT));
             break;
             case 8:
                 a.push_back(std::make_pair(i+1, (int)RIGHT));
@@ -249,13 +293,13 @@ std::vector<std::pair<int, int>> State::get_adjacencies(int i) const
                 a.push_back(std::make_pair(i-1, (int)LEFT));
             break;
             case 32:
-                a.push_back(std::make_pair(i-2, (int)UP_RIGHT));
+                a.push_back(std::make_pair(i-WIDTH+1, (int)UP_RIGHT));
             break;
             case 64:
-                a.push_back(std::make_pair(i-3, (int)UP));
+                a.push_back(std::make_pair(i-WIDTH, (int)UP));
             break;
             case 128:
-                a.push_back(std::make_pair(i-4, (int)UP_LEFT));
+                a.push_back(std::make_pair(i-WIDTH-1, (int)UP_LEFT));
             break;
         }
         p^=d;
@@ -445,7 +489,7 @@ std::vector<std::pair<int,int>> State::get_legal_moves() const
     }
 
     //This checks if the spaceship can exit.
-    adj = get_adjacencies(10); // Goal piece.
+    adj = get_adjacencies(GOAL_POSITION); // Goal piece.
     for(const auto& a : adj)
     {
         if(a.second > 3 || !pieces[a.first]->get_p()){
