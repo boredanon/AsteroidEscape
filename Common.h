@@ -53,6 +53,7 @@ extern uint64_t BOTTOM_ROW;
 extern uint64_t RIGHT_COLUMN;
 extern uint64_t SLIDING_LIMITS[4];
 extern int GOAL_POSITION;
+extern int PIECES_AMOUNT;
 extern int HEIGHT;
 extern int WIDTH;
 

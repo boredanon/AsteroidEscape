@@ -22,7 +22,7 @@ std::vector<int> Game::reconstruct_path(State* goal)
 
 std::string Game::print_board() const
 {
-    return s->print_pieces() + "\n\n" + s->print_board();
+    return s->print_pieces() + "\n\n" + s->print_board() + "\n\n" + s->print_board2();
 }
 
 bool Game::BFS()

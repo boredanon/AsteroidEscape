@@ -16,8 +16,8 @@ State::State(std::string ps, std::string orientations)
     int empty_amounts = 0;
     g=0;
 
-    unsigned int i = 0;
-    for(i = 0; i < 9; i++)
+    int i = 0;
+    for(i = 0; i < PIECES_AMOUNT; i++)
     {
         std::pair<int,int> piece;
         switch(ps[i])
@@ -67,13 +67,13 @@ State::State(std::string ps, std::string orientations)
         pieces[i] = new Piece((PIECE_TYPE)piece.first, (ORIENTATION)piece.second);
     }
 
-    for(; i < 12; i++){
+    for(; i < PIECES_AMOUNT + PIECES_AMOUNT/3; i++){
         pieces[i] = new Piece(EMPTY, CANONICAL); //Goal piece is Piece[10].
     }
 
     if(!is_legal() || empty_amounts>1 || empty_amounts == 0){
 
-        for(int i = 0; i < 12; i++){
+        for(int i = 0; i < PIECES_AMOUNT + PIECES_AMOUNT/3; i++){
             delete pieces[i];
         }
         delete [] pieces;
@@ -197,7 +197,7 @@ void State::set_piece(int index, PIECE_TYPE pt, ORIENTATION po)
 std::string State::print_pieces() const
 {
     std::string s;
-    for(int i = 0; i < 9; i++)
+    for(int i = 0; i < PIECES_AMOUNT; i++)
     {
         s+=pieces[i]->print_piece();
         
@@ -210,7 +210,7 @@ std::string State::print_board() const
 {
     std::string s;
 
-    for(int i = 0; i < 9; i++)
+    for(int i = 0; i < PIECES_AMOUNT; i++)
     {
         s+=pieces[i]->get_type() + " | ";
         if(i==2 || i==5 || i == 8){
@@ -224,8 +224,8 @@ std::string State::print_board() const
 std::string State::print_board2() const
 {
     std::string full_board;
-    std::string context_pieces[9];
-    for(int p = 0; p < 9; p++)
+    std::string context_pieces[PIECES_AMOUNT];
+    for(int p = 0; p < PIECES_AMOUNT; p++)
     {
         auto piece = pieces[p]->get_p();
         auto piece_adjacencies = get_adjacencies(p);
@@ -263,6 +263,55 @@ std::string State::print_board2() const
         }
         context_pieces[p] = get_binary64(piece);
     }
+
+
+
+    auto size=4*HEIGHT+4;
+    std::string b[size];
+    int horizontal_offsets[3] = {0, 2, 4};
+    int vertical_offsets[3] = {0, 16, 32};
+
+    for(int x = 0; x < PIECES_AMOUNT; x+=HEIGHT){
+        for(int y = vertical_offsets[x/3]; y <= 56 ; y+=8){
+            if(context_pieces[x][y] == '0'){
+                context_pieces[x][y] = ' ';
+            }
+            if(context_pieces[x][y+1] == '0'){    
+                context_pieces[x][y+1] = ' ';
+            }             
+        }
+    }
+
+    for(int x = 0; x < 3; x+=1){
+        for(int y = horizontal_offsets[x%3]; y < 8 ; y+=1){
+            if(context_pieces[x][y] == '0'){
+                context_pieces[x][y] = ' ';
+            }
+            if(context_pieces[x][y+8] == '0'){    
+                context_pieces[x][y+8] = ' ';
+            }             
+        }
+    }
+
+
+
+    for(int j = 0; j < size; j++){
+        for(int i = 0; i < size;i++){
+
+            auto row = j/(8 - 2);
+            auto col = i/(8 - 2);
+
+            auto piece_index = col + row*3;
+            auto string_index=(((j%(8-2)*8) + vertical_offsets[piece_index/HEIGHT]) + i%(8-2) + horizontal_offsets[piece_index%WIDTH]);
+
+            //b[j]+=std::to_string(piece_index) + "(" + std::to_string(string_index) + ") ";
+            
+            b[j] += context_pieces[piece_index][string_index];
+
+        }
+        full_board+=b[j]+"\n";
+    }
+
 
     return full_board;
 }
@@ -405,7 +454,7 @@ bool State::is_legal() const
         return false;
     }
 
-    for(int i = 0; i < 9; i++)
+    for(int i = 0; i < PIECES_AMOUNT; i++)
     {
         uint64_t context=pieces[i]->get_p();
         if(check_collision(i, context, -1)){

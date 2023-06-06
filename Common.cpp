@@ -1,6 +1,7 @@
 #include "Common.h"
 
 int GOAL_POSITION = 10;
+int PIECES_AMOUNT = 9;
 int HEIGHT = 3;
 int WIDTH = 3;
 HEURISTIC heuristic;
