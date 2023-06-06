@@ -5,13 +5,15 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <queue>
+#include <stack>
 #include <vector>
 
 class Game
 {
     State* s;
-    State* goal=nullptr;
     std::unordered_map<State*, std::pair<State*, int>> visited_map;
+    
+    std::stack<int> _path;
     std::vector<int> reconstruct_path(State* goal);
 
     int doneIDAstar;

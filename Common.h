@@ -46,6 +46,7 @@ enum HEURISTIC
 
 extern HEURISTIC heuristic;
 extern uint8_t ADJACENCY[12];
+extern uint8_t COMBINED[9];
 extern uint64_t PRECALC_PIECES[7][4];
 extern uint64_t INSIDE; // OUTSIDE = ~INSIDE.
 

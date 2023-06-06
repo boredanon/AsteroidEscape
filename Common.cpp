@@ -51,6 +51,10 @@ uint8_t ADJACENCY[12] = {
     0x0
 };
 
+uint8_t COMBINED[9] = {
+
+};
+
 std::string get_binary64(uint64_t b)
 {
     std::bitset<64> bs(b);

@@ -11,7 +11,9 @@ std::vector<int> Game::reconstruct_path(State* goal)
 
     auto t = goal;
 
-    while(!std::equal_to<State*>{}(t, s))
+   // while(!std::equal_to<State*>{}(t, s))
+
+    while(visited_map[t].second != -1)
     {
         p.push_back(visited_map[t].second);
         t = visited_map[t].first;
@@ -22,7 +24,7 @@ std::vector<int> Game::reconstruct_path(State* goal)
 
 std::string Game::print_board() const
 {
-    return s->print_pieces() + "\n\n" + s->print_board() + "\n\n" + s->print_board2();
+    return s->print_pieces() + "\n\n" + s->print_board() /*+ "\n\n" + s->print_board2()*/;
 }
 
 bool Game::BFS()
@@ -43,10 +45,10 @@ bool Game::BFS()
         auto st = queue.front();
         queue.pop();
         set.erase(st);
-        count++;
         if(st->is_goal())
         {
             std::cout << "Goal found!" << std::endl;
+            std::cout << _path.size() << std::endl;
             std::vector<int> path = reconstruct_path(st);
 
             std::cout << "Solution: ";
@@ -65,12 +67,11 @@ bool Game::BFS()
         {
             auto copy = new State(*st);
             copy->move(m);
-            
             if(visited_map.find(copy) == visited_map.end()){
                 visited_map[copy] = std::make_pair(st, m.second);
             }
             else
-            {
+            {   
                 delete copy;
                 continue;
             }
@@ -78,6 +79,7 @@ bool Game::BFS()
             if(set.count(copy) <= 0){
                 queue.push(copy);
                 set.insert(copy);
+                        count++;
             }
         }
     }
@@ -139,8 +141,6 @@ bool Game::Astar()
                 continue;
             }
 
-
-
             auto new_g = st->get_g() + 1;
 
             auto open_it = open_s.find(copy);
@@ -180,27 +180,24 @@ bool Game::IDAstar()
 
     auto bound = s->get_h();
 
-    auto c = new State(*s);
-    visited_map[c] = std::make_pair(s, -1);
-
-    int t=-1;
+    int t;
     doneIDAstar=false;
     while(bound < 1000000)
     {
-        t = searchIDAstar(c, 0, bound);
-        
+        t = searchIDAstar(s, 0, bound);
         if(doneIDAstar){
+            
             std::cout << "Found solution." << std::endl;
-            std::vector<int> path = reconstruct_path(goal);
 
             std::cout << "Solution: ";
-            for(int i = path.size()-1; i >= 0; i--){
-                std::cout << print_direction(path[i]) << " ";
+            while(!_path.empty())
+            {
+                auto d = _path.top();
+                _path.pop();
+                std::cout << print_direction(d) << " ";
             }
             std::cout << std::endl;
 
-
-            std::cout << visited_map.size() << std::endl;
             return true;
         }
         bound = t;
@@ -213,8 +210,6 @@ int Game::searchIDAstar(State* s, int g, int bound)
 {
     //std::cout << "Calling search..." << std::endl;
     if(s->is_goal()){
-        goal=new State(*s);
-        //std::vector<int> path = reconstruct_path(s);
         doneIDAstar=true;
         return 0;
     }
@@ -226,8 +221,7 @@ int Game::searchIDAstar(State* s, int g, int bound)
     {
         auto copy = new State(*s);
         copy->move(m); 
-
-
+        _path.push(m.second);
         auto h = copy->get_h();
         int t;
 
@@ -237,17 +231,16 @@ int Game::searchIDAstar(State* s, int g, int bound)
             t = 1 + h;
         }
 
-        if(visited_map.find(copy) == visited_map.end()){
-            visited_map[copy] = std::make_pair(s, m.second);
-        }
-
         if(doneIDAstar){
+            delete copy;
             return t;
         }      
 
         if(t < min){
             min = t;
         }
+        _path.pop();
+        delete copy;
     }
     return min;
 }
@@ -263,9 +256,5 @@ Game::~Game()
 
     if(s != nullptr) {
         delete s;
-    }
-
-    if(goal != nullptr){
-        delete goal;
     }
 }
