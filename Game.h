@@ -7,13 +7,15 @@
 #include <queue>
 #include <stack>
 #include <vector>
+#include <chrono>
 
 class Game
 {
     State* s;
     std::unordered_map<State*, std::pair<State*, int>> visited_map;
-    
     std::stack<int> _path;
+    std::unordered_set<State*> _path_set; 
+    int nodes;
     std::vector<int> reconstruct_path(State* goal);
 
     int doneIDAstar;

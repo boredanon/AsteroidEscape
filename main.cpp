@@ -10,6 +10,28 @@ int main(int argc, char** argv)
     if(argc < 3){
         std::cout << "Not enough arguments." << std::endl;
         return -1;
+    }else
+    {
+        std::string h(argv[3]);
+        std::transform(h.begin(), h.end(), h.begin(), ::toupper);
+        if(h == "ZERO"){
+            heuristic = ZERO;
+        }
+        else if(h == "TWOONE"){
+            heuristic = TWOONE;
+        }
+        else if(h == "OBSTACLES0"){
+            heuristic = OBSTACLES0;
+        }
+        else if(h == "OBSTACLES1"){
+            heuristic = OBSTACLES1;
+        }
+        else if(h == "DISTANCE"){
+            heuristic = DISTANCE;
+        }
+        else{
+            heuristic = ZERO;
+        }
     }
 
     try
@@ -43,24 +65,6 @@ int main(int argc, char** argv)
         std::cout << "Piece " << m.first << " in direction " << m.second << std::endl;
     }*/
 
-    if(argc > 3){
-        std::string h(argv[3]);
-        std::transform(h.begin(), h.end(), h.begin(), ::toupper);
-        if(h == "ZERO"){
-            heuristic = ZERO;
-        }
-        else if(h == "TWOONE"){
-            heuristic = TWOONE;
-        }
-        else if(h == "OBSTACLES0"){
-            heuristic = OBSTACLES0;
-        }
-        else if(h == "OBSTACLES1"){
-            heuristic = OBSTACLES1;
-        }
-    }else{
-        heuristic = ZERO;
-    }
 
     if(algorithm == "BFS"){
         g->BFS();

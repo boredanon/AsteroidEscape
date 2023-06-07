@@ -51,8 +51,16 @@ uint8_t ADJACENCY[12] = {
     0x0
 };
 
-uint8_t COMBINED[9] = {
-
+uint64_t COMBINED[9] = { //Basically INSIDE|ADJACENTS
+    0x3f3f3f3f3f3f, // Piece 1
+    0xffffffffffff, // Piece 2
+    0xfcfcfcfcfcfc, // Piece 3
+    0x3f3f3f3f3f3f3f3f, // Piece 4
+    0xffffffffffffffff, // Piece 5
+    0xfcfcfcfcfcfcfcfc, // Piece 6
+    0x3f3f3f3f3f3f0000, // Piece 7
+    0xffffffffffff0000, // Piece 8
+    0xfcfcfcfcfcfc0000 // Piece 9
 };
 
 std::string get_binary64(uint64_t b)

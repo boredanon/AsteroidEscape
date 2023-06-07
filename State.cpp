@@ -79,77 +79,81 @@ State::State(std::string ps, std::string orientations)
         delete [] pieces;
         throw std::runtime_error("Illegal board.");
     }
-
     h = calculateH();
+    std::cout << h << std::endl;
 }
 
 int State::calculateH(){
     int calculated_h = 0;
 
-    if(heuristic==ZERO){
-        return calculated_h;
-    }
-    //return 0;
-    // Solved board doesn't need calculations.
-    if(pieces[GOAL_POSITION]->get_piece_type() == SG_426A)
+    switch(heuristic)
     {
-        return 0;
-    }
-
-    //If it is on the correct column, it is AT LEAST 1 move to reach goal.
-    if(current_ship%3 == 1){
-        calculated_h+=1;
-    }else{ // If not it is at least 2 moves to reach goal.
-        calculated_h+=2;
-    }
-
-    if(current_ship/3 == 2){
-        calculated_h+=1;
-    }
-    else{
-        calculated_h+=2;
-    }
-
-    if(heuristic==TWOONE){
-        return calculated_h;
-    }
-
-    auto adj = get_adjacencies(GOAL_POSITION);
-    for(const auto& a : adj)
-    {
-        if(a.second > 3 || !pieces[a.first]->get_p()){
-            continue;
-        }
-
-        if(pieces[a.first]->get_piece_type() != SG_426A){
-            calculated_h+=1;
-        }
-    }
-
-    if(heuristic == OBSTACLES0){
-        return calculated_h;
-    }
-
-    for(const auto& a : adj)
-    {
-        if(a.second > 3 || !pieces[a.first]->get_p()){
-            continue;
-        }
-
-        auto adj_2 = get_adjacencies(a.first);
-        for(const auto& a_2 : adj_2)
+        case ZERO:
+            return 0;
+        break;
+        case DISTANCE:
         {
-            if(a_2.first == a.first || a_2.second > 3 || !pieces[a_2.first]->get_p()){
-                continue;
+            auto horizontal_distance = (current_ship/3 - GOAL_POSITION/3);
+            if(horizontal_distance < 0){
+                horizontal_distance*=-1;
+            }
+            
+            auto vertical_distance = (current_ship%3 - current_ship%3);
+            if(vertical_distance < 0)
+            {
+                vertical_distance *= -1;
+            }
+            calculated_h += horizontal_distance+vertical_distance;
+        }
+        break;
+        case TWOONE:
+            if(current_ship%3 != 1){
+                calculated_h+=1;
+            }
+            if(current_ship/3 != 3){
+                calculated_h+=1;
+            }
+        break;
+        case OBSTACLES0:
+        {
+            if(current_ship%3 != 1){
+                calculated_h+=1;
+            }
+            if(current_ship/3 != 3){
+                calculated_h+=1;
             }
 
-            if(pieces[a_2.first]->get_piece_type() != SG_426A){
-                calculated_h += 1;
+            if(pieces[GOAL_POSITION]->get_piece_type() != SG_426A){
+                auto adj = get_adjacencies(GOAL_POSITION);
+                for(const auto& a : adj)
+                {
+                    if(a.second > 3){ // No diagonals.
+                        continue;
+                    }
+
+                    if(pieces[a.first]->get_piece_type() > SG_426A){
+                        calculated_h+=1;
+                    }
+                }
             }
         }
+        break;
+        case OBSTACLES1:
+
+            if(current_ship%3 != 1){
+                calculated_h+=1;
+            }
+            if(current_ship/3 != 3){
+                calculated_h+=1;
+            }
+            for(int i = GOAL_POSITION; i/3 > current_ship/3; i-=3){ // Check upwards, columns are already checked.
+                    if(pieces[i]->get_piece_type() != EMPTY){
+                        calculated_h+=1;
+                    }
+                }
+
+        break;
     }
-
-
     return calculated_h;
 }
 
@@ -224,7 +228,10 @@ std::string State::print_board() const
 std::string State::print_board2() const
 {
     std::string full_board;
-    std::string context_pieces[9];
+    uint64_t context_pieces[9];
+    std::string string_pieces[9];
+
+
     for(int p = 0; p < 9; p++)
     {
         auto piece = pieces[p]->get_p();
@@ -261,52 +268,62 @@ std::string State::print_board2() const
                     break;
             }
         }
-        context_pieces[p] = get_binary64(piece);
+        context_pieces[p] = piece;
     }
 
-    auto i = get_binary64(INSIDE);
+    for(int x = 0; x < 9; x++)
+    {
 
-    for(int x = 0; x < 9; x++){
-        for(unsigned int y = 0; y < context_pieces[x].size(); y++){
-            if(context_pieces[x][y] == '0'){
-                if(i[y] == '1'){
-                    context_pieces[x][y] = '.';
-                }
-                if(i[y] == '0'){
-                    context_pieces[x][y] = ' ';
-                }
+        auto outside = get_binary64(~COMBINED[x]);
+        auto context_outside = get_binary64(context_pieces[x] & ~COMBINED[x]);
+        std::string c_piece = get_binary64(context_pieces[x]);
+
+
+
+        for(unsigned int c = 0; c < c_piece.size(); c++){
+            
+            if(context_outside[c] == '0' && outside[c] == '1'){
+                c_piece[c] = ' ';
             }
+
+            if(c_piece[c] == '0'){
+                c_piece[c] = '.';
+            }
+
         }
+        string_pieces[x] = c_piece;
     }
 
 
     auto size=4*HEIGHT+4;
     std::string b[size];
-    std::string c[size];
     int horizontal_offsets[3] = {0, 2, 4};
     int vertical_offsets[3] = {0, 16, 32};
-    
+    int column=0;
     for(int j = 0; j < size; j++){
         for(int i = 0; i < size;i++){
-
+            column++;
             auto row = j/(8 - 2);
             auto col = i/(8 - 2);
 
             auto piece_index = col + row*3;
             auto string_index=(((j%(8-2)*8) + vertical_offsets[piece_index/HEIGHT]) + i%(8-2) + horizontal_offsets[piece_index%WIDTH]);
+            auto to_add = string_pieces[piece_index][string_index];
+            b[j] += to_add;
 
-            c[j]+=std::to_string(piece_index) + "(" + std::to_string(string_index) + ") ";
-            
-            b[j] += context_pieces[piece_index][string_index];
+            if(column%size==6 || column%size==10){
+                b[j]+=" ";
+            }
 
+        }
+        if(j%size == 6 || j%size == 10){
+            std::string blank(4, ' ');
+            full_board+= blank+"\n";
         }
         full_board+=b[j] + "\n";
     }
 
 
-    for(int d = 0; d < size; d++){
-        std::cout << c[d] + " " << std::endl;
-    }
     return full_board;
 }
 
