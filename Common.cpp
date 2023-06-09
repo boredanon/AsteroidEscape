@@ -69,7 +69,7 @@ std::string get_binary64(uint64_t b)
     return bs.to_string();
 }
 
-extern ADJACENCY_DIRECTIONS opposite(ADJACENCY_DIRECTIONS ad)
+ADJACENCY_DIRECTIONS opposite(ADJACENCY_DIRECTIONS ad)
 {
     switch(ad)
     {
@@ -85,7 +85,7 @@ extern ADJACENCY_DIRECTIONS opposite(ADJACENCY_DIRECTIONS ad)
     }
 }
 
-extern std::string print_direction(int dir)
+std::string print_direction(int dir)
 {
     std::string s="";
     switch(dir)
@@ -101,4 +101,17 @@ extern std::string print_direction(int dir)
         default : s+="UNIDENTIFIED"; break;
     }
     return s;
+}
+
+int get_int_prompt(std::string msg)
+{
+    int prompt = 0;
+    std::cout << msg;
+    std::cout << ">> ";
+    while (!(std::cin >> prompt))
+    {
+        std::cout << ">> ";
+    }
+
+    return prompt;
 }

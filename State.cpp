@@ -216,7 +216,7 @@ std::string State::print_board() const
 
     for(int i = 0; i < 9; i++)
     {
-        s+=pieces[i]->get_type() + " | ";
+        s+=std::to_string(i) + ") " + pieces[i]->get_type() + " | ";
         if(i==2 || i==5 || i == 8){
             s+="\n";
         }

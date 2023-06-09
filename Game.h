@@ -27,6 +27,7 @@ class Game
         bool BFS();
         bool Astar();
         bool IDAstar();
+        bool human_player();
         ~Game();
 
 };

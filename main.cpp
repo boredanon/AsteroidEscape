@@ -7,27 +7,32 @@ int main(int argc, char** argv)
     Game* g = nullptr;
     //State* s = nullptr;
     std::string algorithm;
-    if(argc < 3){
+    if(argc < 2){
         std::cout << "Not enough arguments." << std::endl;
         return -1;
     }else
     {
-        std::string h(argv[3]);
-        std::transform(h.begin(), h.end(), h.begin(), ::toupper);
-        if(h == "ZERO"){
-            heuristic = ZERO;
-        }
-        else if(h == "TWOONE"){
-            heuristic = TWOONE;
-        }
-        else if(h == "OBSTACLES0"){
-            heuristic = OBSTACLES0;
-        }
-        else if(h == "OBSTACLES1"){
-            heuristic = OBSTACLES1;
-        }
-        else if(h == "DISTANCE"){
-            heuristic = DISTANCE;
+        if(argc > 3){
+            std::string h(argv[3]);
+            std::transform(h.begin(), h.end(), h.begin(), ::toupper);
+            if(h == "ZERO"){
+                heuristic = ZERO;
+            }
+            else if(h == "TWOONE"){
+                heuristic = TWOONE;
+            }
+            else if(h == "OBSTACLES0"){
+                heuristic = OBSTACLES0;
+            }
+            else if(h == "OBSTACLES1"){
+                heuristic = OBSTACLES1;
+            }
+            else if(h == "DISTANCE"){
+                heuristic = DISTANCE;
+            }
+            else{
+                heuristic = ZERO;
+            }
         }
         else{
             heuristic = ZERO;
@@ -75,6 +80,9 @@ int main(int argc, char** argv)
     }
     else if(algorithm == "IDASTAR"){
         g->IDAstar();
+    }
+    else if(algorithm == "HUMAN"){
+        g->human_player();
     }
     
     delete g;

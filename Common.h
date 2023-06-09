@@ -63,4 +63,5 @@ extern int WIDTH;
 extern std::string get_binary64(uint64_t b);
 extern ADJACENCY_DIRECTIONS opposite(ADJACENCY_DIRECTIONS ad);
 extern std::string print_direction(int dir);
+extern int get_int_prompt(std::string msg);
 #endif /*COMMON_H_*/
