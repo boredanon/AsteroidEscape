@@ -43,7 +43,6 @@ bool Game::BFS()
     visited_map[c] = std::make_pair(s, -1);
     while(!queue.empty())
     {
-        nodes++;
         auto st = queue.front();
         queue.pop();
         set.erase(st);
@@ -60,8 +59,8 @@ bool Game::BFS()
             std::cout << std::endl;
             std::cout << "Length: " << path.size() << std::endl;
             auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
-            std::cout << "Time: " << diff/1000.0 << "ms" << std::endl;
-            std::cout << "Nodes evaluated (iterations): " << nodes << std::endl;
+            std::cout << "Time: " << diff/1000.0 << "s" << std::endl;
+            std::cout << "Nodes evaluated (every iterations): " << nodes << std::endl;
             std::cout << "Queue size: " << queue.size() << std::endl;
             std::cout << "Nodes per second: " << (double)nodes/(diff/1000.0) << std::endl;
 
@@ -73,6 +72,7 @@ bool Game::BFS()
         {   
             auto copy = new State(*st);
             copy->move(m);
+            nodes++;
             if(visited_map.find(copy) == visited_map.end()){
                 visited_map[copy] = std::make_pair(st, m.second);
             }
@@ -109,7 +109,6 @@ bool Game::Astar()
     auto start = std::chrono::high_resolution_clock::now();
     while(!open.empty())
     {
-        nodes++;
         auto st = open.top();
         open_s.erase(st);
         open.pop();
@@ -128,8 +127,9 @@ bool Game::Astar()
             std::cout << "Length: " << path.size() << std::endl;
             std::cout << "Closed list nodes: " << closed.size() << std::endl;
             auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
-            std::cout << "Time: " << diff/1000.0 << "ms" << std::endl;
+            std::cout << "Time: " << diff/1000.0 << "s" << std::endl;
             std::cout << "Nodes per second: " << (double)nodes/(diff/1000.0) << std::endl;
+            std::cout << "All iterations: " << nodes << std::endl;
 
             //delete st;
             //delete copy;
@@ -139,6 +139,7 @@ bool Game::Astar()
         auto moves = st->get_legal_moves();
         for(const auto& m: moves)
         {
+            nodes++;
             auto copy = new State(*st);
             copy->move(m);
             //std::cout << copy->print_board() << std::endl;
@@ -199,7 +200,7 @@ bool Game::IDAstar()
         nodes=0;
         t = searchIDAstar(s, 0, bound);
 
-        //std::cout << "Bound: " << bound;
+       // std::cout << "Bound: " << bound;
         //std::cout << " Nodes visited " << nodes << std::endl;
         total_nodes+=nodes;
         //total_repeated+=repeated_nodes;
@@ -234,7 +235,7 @@ bool Game::IDAstar()
             std::cout << "Time: " << diff/1000.0 << "s" << std::endl;
             std::cout << "Nodes expanded at bound " << bound << ": " << nodes << std::endl;
             std::cout << "Total nodes expanded (considering repeats): " << total_nodes << std::endl;
-            std::cout << "Nodes per second: " << (double)total_nodes/(diff/1000.0) << std::endl;
+            std::cout << "Nodes per second: " << (double)total_nodes/(diff/1000.0) << std::endl; 
             return true;
         }
         bound = t;
@@ -258,7 +259,7 @@ int Game::searchIDAstar(State* s, int g, int bound)
     for(const auto& m : moves)
     {
         auto copy = new State(*s);
-        copy->move(m); 
+        copy->move(m); //This calculates h and adds one to g
 
         if(_path_set.find(copy) == _path_set.end()){
 

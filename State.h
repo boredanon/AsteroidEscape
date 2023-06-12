@@ -9,24 +9,24 @@
 class State
 {
     private:
-        Piece** pieces;
-        int current_empty;
-        int current_ship;
-        bool check_collision(int i, uint64_t context, int ignore) const; //Ignore is used mid-movement.
+        Piece** pieces; // 3x3 board... could be more in the future.
+        int current_empty; // To obtain the legal moves faster.
+        int current_ship; // To calculate the heuristics faster.
+        bool check_collision(int i, uint64_t context, int ignore) const; //Ignore is used if a piece is moving to avoid checking the piece is moving towards.
         std::vector<std::pair<int, int>> get_adjacencies(int i) const;
-        int calculateH();
+        int calculateH(); // CALCULATE the heuristic, on start and after moving.
     public:
         int g;
         int h;
         State();
         State(const State& s);
         State(std::string pieces, std::string orientations);
-        void init();
+        void init(); // Init board
         void set_piece(int index, PIECE_TYPE pt, ORIENTATION po);
-        Piece* get_piece(int index) const;
-        Piece* get_empty() const;
-        int get_f() const;
-        int get_h() const;
+        Piece* get_piece(int index) const; // Get a particular piece
+        Piece* get_empty() const; // Get the empty piece.
+        int get_f() const; // IDA*, A*
+        int get_h() const; // 
         int get_g() const;
         std::vector<std::pair<int,int>> get_legal_moves() const;
         bool is_legal() const;
