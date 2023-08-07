@@ -1,3 +1,4 @@
+
 #include "Game.h"
 
 Game::Game(std::string positions, std::string orientations)
@@ -22,6 +23,35 @@ std::vector<int> Game::reconstruct_path(State* goal)
     return p;
 }
 
+void Game::reconstruct_multipath(State* t)
+{
+    auto it = visited_multimap.equal_range(t);
+
+    for(auto i = it.first; i != it.second; i++)
+    {
+        std::cout << t->g << "," << print_direction(i->second.second) << std::endl;
+        reconstruct_multipath(i->second.first);
+    }
+
+}
+
+std::stack<int> Game::reconstruct_path2(State* g, std::stack<int>& path)
+{
+    if(g->g == 0) {
+        return path;
+    }
+    auto t = g;
+    auto parent = parents[t];
+    for(auto i = parent.begin(); i != parent.end(); i++)
+    {
+        //std::cout << print_direction(i->second) << " ";
+        path.push(i->second);
+        reconstruct_path2(i->first, path);
+    }
+    return path;
+}
+
+
 std::string Game::print_board() const
 {
     return s->print_board() + "\n\n" + s->print_board2() + "\n\n";
@@ -31,6 +61,8 @@ bool Game::BFS()
 {
     std::cout << "Running BFS..." << std::endl;
     
+
+
     std::unordered_set<State*> set;
     std::queue<State*> queue;
 
@@ -41,6 +73,8 @@ bool Game::BFS()
 
     auto start = std::chrono::high_resolution_clock::now();
     visited_map[c] = std::make_pair(s, -1);
+
+
     while(!queue.empty())
     {
         auto st = queue.front();
@@ -48,6 +82,7 @@ bool Game::BFS()
         set.erase(st);
         if(st->is_goal())
         {
+
             auto end = std::chrono::high_resolution_clock::now();
             std::cout << "Goal found!" << std::endl;
             std::vector<int> path = reconstruct_path(st);
@@ -89,6 +124,217 @@ bool Game::BFS()
         }
     }
     std::cout << "No solution found." << std::endl;
+    return false;
+}
+
+bool Game::BFS_allpaths()
+{
+    std::cout << "Running BFS (All min. paths)" << std::endl;
+    std::unordered_set<State*> set;
+    std::queue<State*> queue;
+
+    State* c = new State(*s);
+    set.insert(c);
+    queue.push(c);
+    parents[c].push_back({s, -1});
+    nodes=0;
+
+    int minimum_solution_length = -1;
+
+    auto start = std::chrono::high_resolution_clock::now();
+    auto solution_start = std::chrono::high_resolution_clock::now();
+    while(!queue.empty())
+    {
+        auto st = queue.front();
+        queue.pop();
+        
+        if(st->is_goal())
+        {   
+            if(minimum_solution_length == -1)
+            {
+                auto solution_end = std::chrono::high_resolution_clock::now();
+                std::cout << "Solution found!" << std::endl;
+                minimum_solution_length = st->g;
+                std::cout << "Path: ";
+                std::stack<int> path;
+                path = reconstruct_path2(st, path);
+
+                while(!path.empty())
+                {
+                    auto move = path.top();
+                    path.pop();
+                    std::cout << print_direction(move) << " ";
+                }
+                std::cout << std::endl;
+
+                auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(solution_end-solution_start).count();
+                std::cout << "Length: " << st->g << std::endl;
+                std::cout << "Time for this solution: " << (diff/1000.0) << "s" << std::endl;
+                std::cout << "Nodes evaluated for this solution: " << std::endl;
+                std::cout << "Total nodes evaluated so far: " << std::endl;
+                std::cout << std::endl;
+
+                solution_start = std::chrono::high_resolution_clock::now();
+            }
+            else
+            {
+                if(st->g > minimum_solution_length)
+                {
+                    auto end = std::chrono::high_resolution_clock::now();
+                    std::cout << "All min. paths found." << std::endl;
+                    std::cout << "Total nodes evaluated:" << nodes << std::endl;
+                    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
+                    std::cout << "Total time elapsed: " << diff/1000.0 << "s." << std::endl;
+
+                    return true;
+                }
+                else
+                {
+                    auto solution_end = std::chrono::high_resolution_clock::now();
+                    std::cout << "Solution found! " << std::endl;
+                    std::cout << "Path: ";
+                    std::stack<int> path;
+                    path = reconstruct_path2(st, path);
+
+                    while(!path.empty())
+                    {
+                        auto move = path.top();
+                        path.pop();
+                        std::cout << print_direction(move) << " ";
+                    }
+                    std::cout << std::endl;
+
+                    auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(solution_end-solution_start).count();
+                    std::cout << "Length: " << st->g << std::endl;
+                    std::cout << "Time for this solution: " << (diff/1000.0) << "s" << std::endl;
+                    std::cout << "Nodes evaluated for this solution: " << std::endl;
+                    std::cout << "Total nodes evaluated so far: " << std::endl;
+                    std::cout << std::endl;
+
+                    solution_start = std::chrono::high_resolution_clock::now();
+                }
+            }
+            //return true;
+        }
+
+        auto moves = st->get_legal_moves();
+        for(const auto &m : moves)
+        {
+            auto copy = new State(*st);
+            copy->move(m); // We can use the g value here. The method move updates its value.
+            nodes++;
+
+            if(set.count(copy) <= 0) // Not visited.
+            {
+                queue.push(copy);
+                set.insert(copy);
+                parents[copy].push_back({st, m.second});
+            }
+            else
+            {
+                auto p = parents[copy];
+
+                bool add=true;
+                for(auto it = p.begin(); it != p.end(); it++){
+                    if(it->first->g != st->g){
+                        add=false;
+                        break;
+                    }
+                }
+
+                if(!add){
+                    delete copy;
+                    continue;
+                }
+                parents[copy].push_back({st, m.second});  
+            }
+        }
+    }
+    std::cout << "No solution found." << std::endl;
+    return false;
+}
+
+bool Game::Allstar()
+{
+    std::cout << "Running All*..." << std::endl;
+    
+
+    //Initialization
+    std::unordered_set<State*> open_s;
+    std::priority_queue<State*, std::vector<State*>, Comparator> open;
+    std::unordered_set<State*> closed;
+
+    auto c = new State(*s);
+    open_s.insert(c);
+    open.push(c);
+    visited_multimap.insert(std::make_pair(c, std::make_pair(s, -1)));
+    //visited_map[c] = std::make_pair(s, -1);
+    //End of initialization
+
+    while(!open.empty())
+    {
+        auto st = open.top();
+        open_s.erase(st);
+        open.pop();
+
+        //We found it.
+        if(st->is_goal())
+        {
+            auto end = std::chrono::high_resolution_clock::now();
+            //std::vector<int> path = reconstruct_multipath(st);
+            std::cout << "Goal found!" << std::endl;
+            std::cout << "Nodes: " << nodes << std::endl;
+            std::cout << "Closed list size: " << closed.size() << std::endl;
+            //return true;
+        }
+
+        auto moves = st->get_legal_moves();
+        for(const auto& m : moves)
+        {
+            nodes++;
+            auto copy = new State(*st);
+            copy->move(m);
+            /*if(visited_multimap.find(copy) == visited_multimap.end()){
+                visited_multimap.insert(std::make_pair(c, std::make_pair(st, m.second)));
+            }*/
+            /*if(visited_map.find(copy) == visited_map.end()){
+                visited_map[copy] = std::make_pair(st, m.second);
+            }
+            else{
+                delete copy;
+                continue;
+            }*/
+
+            auto new_g = st->get_g() + 1;
+
+            auto open_it = open_s.find(copy);
+            auto closed_it = closed.find(copy);
+
+            if(closed_it != closed.end()){
+                if(copy->get_g() < new_g){
+                    continue;
+                }
+                closed.erase(copy);
+            }
+
+            if(open_it != open_s.end()){
+                if(copy->get_g() < new_g)
+                {
+                    continue;
+                }
+            }
+
+            copy->g = new_g;
+            copy->h = copy->get_h();
+
+            open_s.insert(copy);
+            open.push(copy);
+            visited_multimap.insert({copy, {st, m.second}});
+        }
+        closed.insert(st);
+    }
+
+    std::cout << "No solution found..." << std::endl;
     return false;
 }
 
@@ -357,6 +603,17 @@ Game::~Game()
         delete it->first;
     }
     visited_map.clear();
+
+    for(auto it = parents.begin(); it != parents.end(); it++){
+        delete it->first;
+    }
+    parents.clear();
+
+
+    /*for(auto it = visited_multimap.begin(); it != visited_multimap.end(); it++){
+        delete it->first;
+    }
+    visited_multimap.clear();-*/
 
     if(s != nullptr) {
         delete s;

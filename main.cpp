@@ -81,6 +81,12 @@ int main(int argc, char** argv)
     else if(algorithm == "IDASTAR"){
         g->IDAstar();
     }
+    else if(algorithm == "ALLSTAR"){
+        g->Allstar();
+    }
+    else if(algorithm == "ALLPATHS"){
+        g->BFS_allpaths();
+    }
     else if(algorithm == "HUMAN"){
         g->human_player();
     }

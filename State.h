@@ -24,6 +24,7 @@ class State
         void init(); // Init board
         void set_piece(int index, PIECE_TYPE pt, ORIENTATION po);
         Piece* get_piece(int index) const; // Get a particular piece
+        void set_empty(); // Fix.
         Piece* get_empty() const; // Get the empty piece.
         int get_f() const; // IDA*, A*
         int get_h() const; // 

@@ -189,6 +189,16 @@ Piece* State::get_empty() const{
     return pieces[current_empty];
 }
 
+void State::set_empty(){
+    for(int i = 0; i < 9; i++)
+    {
+        if(pieces[i]->get_piece_type() == EMPTY){
+            current_empty=i;
+            break;
+        }
+    }
+}
+
 Piece* State::get_piece(int index) const{
     return pieces[index];
 }
@@ -534,7 +544,6 @@ bool State::can_slide(int from, int to, int direction) const
 std::vector<std::pair<int,int>> State::get_legal_moves() const
 {
     std::vector<std::pair<int,int>> v;
-    //std::cout << "Current empty piece is: " << current_empty << std::endl;
 
     //Movements.
     auto adj = get_adjacencies(current_empty);
