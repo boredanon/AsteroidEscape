@@ -9,27 +9,30 @@
 #include <stack>
 #include <vector>
 #include <chrono>
+#include <fstream>
 
 class Game
 {
     State* s;
     std::unordered_map<State*, std::pair<State*, int>> visited_map;
-    std::multimap<State*, std::pair<State*, int>> visited_multimap;
-
     std::unordered_map<State*, std::vector<std::pair<State*, int>>> parents;
-
+    std::unordered_set<State*> visited;
     std::stack<int> _path;
+    std::stack<double> entropy_path;
     std::unordered_set<State*> _path_set; 
+
+    
+
     int nodes;
     std::vector<int> reconstruct_path(State* goal);
-    std::stack<int> reconstruct_path2(State* goal, std::stack<int>& path);
-    void reconstruct_multipath(State* goal);
-
-    bool allBFS();
+    std::stack<std::pair<int,double>> reconstruct_path2(State* goal, std::stack<std::pair<int,double>>& path);
 
     int doneIDAstar;
-
+    int doneMUSE;
+    double minimum=10000.0;
     int searchIDAstar(State* s, int g, int bound);
+    double minimum_path_entropy(State* s, int g);
+
     public:
         Game(std::string positions, std::string orientations);
         std::string print_board() const;
@@ -39,6 +42,7 @@ class Game
         bool Allstar();
         bool IDAstar();
         bool human_player();
+        void MUSE();
         ~Game();
 
 };

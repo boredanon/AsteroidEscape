@@ -37,6 +37,15 @@ int main(int argc, char** argv)
         else{
             heuristic = ZERO;
         }
+
+        if(argc > 4){
+            std::string lookback(argv[4]);
+            std::transform(lookback.begin(), lookback.end(), lookback.begin(), ::toupper);
+            if(lookback == "LOOKBACK")
+            {
+                CAN_RETURN=true;
+            }
+        }
     }
 
     try
@@ -90,7 +99,8 @@ int main(int argc, char** argv)
     else if(algorithm == "HUMAN"){
         g->human_player();
     }
-    
+
+    g->MUSE();
     delete g;
     //delete s;
     return 0;

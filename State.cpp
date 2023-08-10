@@ -410,6 +410,7 @@ void State::move(std::pair<int, int> m)
     current_empty=m.first;
     g++;
     h=calculateH();
+    previous_move = (ADJACENCY_DIRECTIONS)m.second;
 }
 
 bool State::check_collision(int i, uint64_t context, int ignore) const
@@ -548,7 +549,7 @@ std::vector<std::pair<int,int>> State::get_legal_moves() const
     //Movements.
     auto adj = get_adjacencies(current_empty);
     for(const auto& a : adj){
-        if(a.second > 3 || !pieces[a.first]->get_p()){
+        if(a.second > 3 || !pieces[a.first]->get_p() || (!CAN_RETURN && previous_move == a.second)){
             continue;
         }
 
@@ -575,6 +576,35 @@ std::vector<std::pair<int,int>> State::get_legal_moves() const
 
 bool State::is_goal() const{
     return pieces[GOAL_POSITION]->get_piece_type() == SG_426A;
+}
+
+double State::calculate_entropy() const
+{
+    if(is_goal()) return 0.0;
+    
+    double H=0;
+    auto m = get_legal_moves().size();
+    //Precalculated, there are max 4 moves. Otherwise use sum P(z_k)*log2(1/P(z_k)), k=1 to n
+    switch(m)
+    {
+        case 0:
+            H=1000000; // Arbitrary high number.
+            break;
+        case 1:
+            H=0.0;
+            break;
+        case 2:
+            H=1.0;
+            break;
+        case 3:
+            H=1.6;
+            break;
+        case 4:
+            H=2.0;
+            break;        
+    }
+
+    return H;
 }
 
 State::~State()

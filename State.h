@@ -15,6 +15,8 @@ class State
         bool check_collision(int i, uint64_t context, int ignore) const; //Ignore is used if a piece is moving to avoid checking the piece is moving towards.
         std::vector<std::pair<int, int>> get_adjacencies(int i) const;
         int calculateH(); // CALCULATE the heuristic, on start and after moving.
+        ADJACENCY_DIRECTIONS previous_move = DOWN_RIGHT;
+        double accumulated_entropy=0.0;
     public:
         int g;
         int h;
@@ -34,6 +36,7 @@ class State
         bool can_slide(int from, int to, int direction) const;
         void move(std::pair<int,int> m);
         bool is_goal() const;
+        double calculate_entropy() const;
         std::string print_pieces() const;
         std::string print_board() const;
         std::string print_board2() const;

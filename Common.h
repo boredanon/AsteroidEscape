@@ -58,6 +58,7 @@ extern int GOAL_POSITION;
 extern int PIECES_AMOUNT;
 extern int HEIGHT;
 extern int WIDTH;
+extern bool CAN_RETURN;
 
 
 extern std::string get_binary64(uint64_t b);
