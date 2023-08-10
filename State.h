@@ -4,6 +4,7 @@
 #include "Piece.h"
 #include <vector>
 #include <stdexcept>
+#include <cmath>
 #include <functional>
 
 class State
@@ -36,7 +37,7 @@ class State
         bool can_slide(int from, int to, int direction) const;
         void move(std::pair<int,int> m);
         bool is_goal() const;
-        double calculate_entropy() const;
+        double calculate_entropy(std::vector<double>& child_entropies) const;
         std::string print_pieces() const;
         std::string print_board() const;
         std::string print_board2() const;

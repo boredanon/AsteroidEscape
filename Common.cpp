@@ -5,6 +5,7 @@ int PIECES_AMOUNT = 9;
 int HEIGHT = 3;
 int WIDTH = 3;
 bool CAN_RETURN=false;
+bool REMUSE=false;
 HEURISTIC heuristic;
 uint64_t INSIDE=0x3c3c3c3c0000;
 uint64_t RIGHT_COLUMN=0xf0f0f0f0f0f0f0f;

@@ -34,7 +34,8 @@ std::stack<std::pair<int,double>> Game::reconstruct_path2(State* g, std::stack<s
     for(auto i = parent.begin(); i != parent.end(); i++)
     {
         //std::cout << print_direction(i->second) << " ";
-        path.push({i->second,i->first->calculate_entropy()});
+        std::vector<double> dummy;
+        path.push({i->second,i->first->calculate_entropy(dummy)});
         reconstruct_path2(i->first, path);
     }
     return path;
@@ -632,10 +633,52 @@ bool Game::human_player(){
     return true;
 }
 
+
+void Game::MUSE()
+{
+    if(!REMUSE){
+        std::cout << "Running MUSE..." << std::endl;
+    }
+    else
+        std::cout << "Running ReMUSE..." << std::endl;
+
+    std::vector<double> d;
+    std::cout << "Score: " << minimum_path_entropy(s, 0) << std::endl;
+}
+
 double Game::minimum_path_entropy(State* s, int g)
 {
+    if(minimum_solution_length != -1 && g > minimum_solution_length){
+        return 10000.0;
+    }
+
     if(s->is_goal()) // Solved.
     {
+        if(g != 6){
+            return 10000.0;
+        }
+
+        if(minimum_solution_length == -1)
+        {
+            minimum_solution_length = g;
+        }
+        else
+        {
+            if(g <= minimum_solution_length)
+            {
+                minimum_solution_length = g;
+                /*auto t = _path;
+                while(!t.empty())
+                {
+                    auto p = t.top();
+
+                    std::cout << print_direction(p) << " ";
+                    t.pop();
+                }
+                std::cout << std::endl;*/
+
+            }
+        }
         return 0.0;
     }
 
@@ -648,7 +691,7 @@ double Game::minimum_path_entropy(State* s, int g)
 
     std::vector<double> child_entropies;
 
-    auto immediate = s->calculate_entropy();
+    
     for(const auto &m : moves)
     {
         auto child = new State(*s);
@@ -657,45 +700,26 @@ double Game::minimum_path_entropy(State* s, int g)
         if(_path_set.find(child) == _path_set.end()){
             _path_set.insert(child);
             _path.push(m.second);
-            entropy_path.push(child->calculate_entropy());
             child_entropies.push_back(minimum_path_entropy(child, g+1));
-            entropy_path.pop();
             _path_set.erase(child);
             _path.pop();
         }
         delete child;
     }
-
+    
     bool all_zeros = std::all_of(child_entropies.begin(), child_entropies.end(), [](double i){return i == 0.0;});
     /*if(all_zeros){
-        return 0.0;
+        return s->calculate_entropy(child_entropies);
     }*/
 
     if(child_entropies.size() == 0){
         return 10000.0;
     }
+
+    auto immediate = s->calculate_entropy(child_entropies);
     auto min = *std::min_element(child_entropies.begin(), child_entropies.end());
 
     return immediate+min;
-}
-
-void Game::MUSE()
-{
-    std::cout << "Running MUSE..." << std::endl;
-
-    std::vector<double> entropies;
-
-    while(!doneMUSE)
-    {
-        entropies.push_back(minimum_path_entropy(s, 0));
-
-        if(doneMUSE)
-        {
-            std::cout << "Goal found!" << std::endl;
-        }
-    }
-
-    std::cout << "MUSE result:" << *std::min_element(entropies.begin(), entropies.end()) << std::endl;
 }
 
 Game::~Game()

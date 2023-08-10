@@ -578,33 +578,68 @@ bool State::is_goal() const{
     return pieces[GOAL_POSITION]->get_piece_type() == SG_426A;
 }
 
-double State::calculate_entropy() const
+double State::calculate_entropy(std::vector<double>& child_entropies) const
 {
     if(is_goal()) return 0.0;
-    
-    double H=0;
-    auto m = get_legal_moves().size();
+    if(!REMUSE){   
+        double H=0;
+        auto m = get_legal_moves().size();
     //Precalculated, there are max 4 moves. Otherwise use sum P(z_k)*log2(1/P(z_k)), k=1 to n
-    switch(m)
-    {
-        case 0:
-            H=1000000; // Arbitrary high number.
-            break;
-        case 1:
-            H=0.0;
-            break;
-        case 2:
-            H=1.0;
-            break;
-        case 3:
-            H=1.6;
-            break;
-        case 4:
-            H=2.0;
-            break;        
-    }
+        switch(m)
+        {
+            case 0:
+                H=1000000; // Arbitrary high number.
+                break;
+            case 1:
+                H=0.0;
+                break;
+            case 2:
+                H=1.0;
+                break;
+            case 3:
+                H=1.6;
+                break;
+            case 4:
+                H=2.0;
+                break;        
+            }
 
-    return H;
+        return H;
+    }
+    else
+    {
+        // Softmin.
+        std::vector<double> P;
+        double Q = (1.0 / child_entropies.size());
+
+        float denominator = 0.0;
+        for(const auto & z_j : child_entropies)
+        {
+            if(z_j < 10000.0)
+                denominator += std::exp(-z_j);
+        }
+
+        for(const auto & z_i : child_entropies)
+        {
+            if(z_i >= 10000.0){
+                P.push_back(0);
+                continue;
+            }
+            auto e = std::exp(-z_i);
+            P.push_back(e/denominator);
+        }
+
+
+        //KL(softmin)
+        double divergence_KL = 0.0;
+        for(unsigned int x = 0; x < child_entropies.size(); x++)
+        {
+            if(P[x] != 0)
+                divergence_KL += P[x] * log2((P[x]/Q));
+        }
+        return divergence_KL;
+    }
+    //KL-softmin
 }
 
 State::~State()

@@ -32,6 +32,7 @@ class Game
     double minimum=10000.0;
     int searchIDAstar(State* s, int g, int bound);
     double minimum_path_entropy(State* s, int g);
+    int minimum_solution_length=-1;
 
     public:
         Game(std::string positions, std::string orientations);

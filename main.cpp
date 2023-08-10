@@ -99,8 +99,14 @@ int main(int argc, char** argv)
     else if(algorithm == "HUMAN"){
         g->human_player();
     }
-
-    g->MUSE();
+    else if(algorithm == "MUSE"){
+        REMUSE=false;
+        g->MUSE();
+    }
+    else if(algorithm == "REMUSE"){
+        REMUSE=true;
+        g->MUSE();
+    }
     delete g;
     //delete s;
     return 0;
