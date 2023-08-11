@@ -101,10 +101,12 @@ int main(int argc, char** argv)
     }
     else if(algorithm == "MUSE"){
         REMUSE=false;
+        g->Allstar();
         g->MUSE();
     }
     else if(algorithm == "REMUSE"){
         REMUSE=true;
+        g->Allstar();
         g->MUSE();
     }
     delete g;

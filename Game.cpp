@@ -129,8 +129,7 @@ bool Game::BFS_allpaths()
     queue.push(c);
     parents[c].push_back({s, -1});
     nodes=0;
-    
-    int minimum_solution_length = -1;
+
 
     auto start = std::chrono::high_resolution_clock::now();
     auto solution_start = std::chrono::high_resolution_clock::now();
@@ -250,7 +249,6 @@ bool Game::Allstar()
 
     parents[c].push_back({s, -1});
 
-    int minimum_solution_length = -1;
     auto start = std::chrono::high_resolution_clock::now();
     auto solution_start = std::chrono::high_resolution_clock::now();
     while(!open_q.empty())
@@ -654,10 +652,6 @@ double Game::minimum_path_entropy(State* s, int g)
 
     if(s->is_goal()) // Solved.
     {
-        if(g != 6){
-            return 10000.0;
-        }
-
         if(minimum_solution_length == -1)
         {
             minimum_solution_length = g;
@@ -667,7 +661,7 @@ double Game::minimum_path_entropy(State* s, int g)
             if(g <= minimum_solution_length)
             {
                 minimum_solution_length = g;
-                /*auto t = _path;
+                auto t = _path;
                 while(!t.empty())
                 {
                     auto p = t.top();
@@ -675,7 +669,7 @@ double Game::minimum_path_entropy(State* s, int g)
                     std::cout << print_direction(p) << " ";
                     t.pop();
                 }
-                std::cout << std::endl;*/
+                std::cout << std::endl;
 
             }
         }
