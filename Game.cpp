@@ -27,17 +27,24 @@ std::vector<int> Game::reconstruct_path(State* goal)
 std::stack<std::pair<int,double>> Game::reconstruct_path2(State* g, std::stack<std::pair<int,double>>& path)
 {
     if(g->g == 0) {
+        //std::cout << std::endl;
+        //std::cout << std::endl;
         return path;
     }
     auto t = g;
     auto parent = parents[t];
+
+    std::cout << g->g << std::endl;
     for(auto i = parent.begin(); i != parent.end(); i++)
     {
         //std::cout << print_direction(i->second) << " ";
         std::vector<double> dummy;
+        //std::cout << print_direction(i->second) << " ";
         path.push({i->second,i->first->calculate_entropy(dummy)});
         reconstruct_path2(i->first, path);
+        //std::cout << std::endl;
     }
+
     return path;
 }
 
@@ -148,7 +155,7 @@ bool Game::BFS_allpaths()
                 minimum_solution_length = st->g;
                 std::cout << "Path: ";
                 std::stack<std::pair<int,double>> path;
-                path = reconstruct_path2(st, path);
+                //path = reconstruct_path2(st, path);
                 while(!path.empty())
                 {
                     auto move = path.top();
@@ -185,7 +192,7 @@ bool Game::BFS_allpaths()
                     std::cout << "Solution found! " << std::endl;
                     std::cout << "Path: ";
                     std::stack<std::pair<int,double>> path;
-                    path = reconstruct_path2(st, path);
+                    //path = reconstruct_path2(st, path);
 
                     while(!path.empty())
                     {
@@ -200,8 +207,7 @@ bool Game::BFS_allpaths()
                     std::cout << "Length: " << st->g << std::endl;
                     std::cout << "Entropy for this solution: " << solution_entropy << std::endl;
                     std::cout << "Time for this solution: " << (diff/1000.0) << "s" << std::endl;
-                    std::cout << "Nodes evaluated for this solution: " << std::endl;
-                    std::cout << "Total nodes evaluated so far: " << std::endl;
+                    std::cout << "Nodes evaluated for this solution: " << nodes << std::endl;
                     std::cout << std::endl;
 
                     entropies.push_back(solution_entropy);
@@ -224,7 +230,23 @@ bool Game::BFS_allpaths()
                 set.insert(copy);
                 parents[copy].push_back({st, m.second});
             }else{
-                delete copy;
+                auto p = parents[copy];
+                auto g = st->g;
+                bool to_add = true;
+                for(auto pr = p.begin(); pr != p.end(); pr++)
+                {
+                    if(pr->first->g != g){
+                        to_add = false;
+                        break;
+                    }
+                }
+
+                if(to_add)
+                {
+                    parents[copy].push_back({st,m.second});
+                }else{
+                    delete copy;
+                }
             }
         }
     }
@@ -266,15 +288,15 @@ bool Game::Allstar()
                 minimum_solution_length = st->g;
                 std::cout << "Goal found!" << std::endl;
                 std::stack<std::pair<int,double>> path;
-                path = reconstruct_path2(st, path);
+                //path = reconstruct_path2(st, path);
                 std::cout << "Path: ";
-                while(!path.empty())
+                /*while(!path.empty())
                 {
                     auto move = path.top();
                     path.pop();
                     std::cout << print_direction(move.first) << " ";
                     solution_entropy+=move.second;
-                }
+                }*/
                 std::cout << std::endl;
                 auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(solution_end-solution_start).count();
                 std::cout << "Entropy for this solution: " << solution_entropy << std::endl;
@@ -292,33 +314,34 @@ bool Game::Allstar()
                 {
                     auto end = std::chrono::high_resolution_clock::now();
                     std::cout << "All min. paths found." << std::endl;
-                    std::cout << "Total nodes evaluated:" << closed.size() << std::endl;
+                    std::cout << "Closed list size:" << closed.size() << std::endl;
                     auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
                     std::cout << "Total time elapsed: " << diff/1000.0 << "s." << std::endl;
                     return true;
                 }
-                else
+                //else
+                if(st->g <= minimum_solution_length)
                 {   
                     double solution_entropy = 0.0;
                     auto solution_end = std::chrono::high_resolution_clock::now(); 
                     std::cout << "Goal found!" << std::endl;
                     std::stack<std::pair<int,double>> path;
-                    path = reconstruct_path2(st, path);
+                    //path = reconstruct_path2(st, path);
                     std::cout << "Path: ";
-                    while(!path.empty())
+                    /*while(!path.empty())
                     {
                         auto move = path.top();
                         path.pop();
                         std::cout << print_direction(move.first) << " ";
                         solution_entropy+=move.second;
-                    }
+                    }*/
                     std::cout << std::endl;
 
                     auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(solution_end-solution_start).count();
                     std::cout << "Length: " << st->g << std::endl;
                     std::cout << "Entropy for this solution: " << solution_entropy << std::endl;
                     std::cout << "Time for this solution: " << (diff/1000.0) << "s" << std::endl;
-                    std::cout << "Total nodes evaluated so far: " << nodes << std::endl;
+                    std::cout << "Total nodes evaluated so far: " << closed.size() << std::endl;
                     std::cout << std::endl;
                     entropies.push_back(solution_entropy);
                     solution_start = std::chrono::high_resolution_clock::now();
@@ -342,9 +365,19 @@ bool Game::Allstar()
 
             if(open_it != open_s.end())
             {
-                if(copy->get_g() <= new_g)
+                if(copy->get_g() < new_g)
                 {
                     delete copy;
+                    continue;
+                }
+                else if(copy->get_g() == new_g)
+                {
+                    copy->g = new_g;
+                    copy->h = copy->get_h();
+
+                    open_s.insert(copy);
+                    open_q.push(copy);
+                    parents[copy].push_back({st, m.second});
                     continue;
                 }
             }
@@ -359,6 +392,7 @@ bool Game::Allstar()
                 closed.erase(copy);
             }
 
+            //Not visited.
             copy->g = new_g;
             copy->h = copy->get_h();
 
@@ -669,6 +703,7 @@ double Game::minimum_path_entropy(State* s, int g)
                     std::cout << print_direction(p) << " ";
                     t.pop();
                 }
+                std::cout << std::endl;
                 std::cout << std::endl;
 
             }
