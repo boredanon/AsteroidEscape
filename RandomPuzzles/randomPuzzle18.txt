@@ -1,0 +1,126 @@
+DGBHDDCA-
+102122100
+
+Solution: DOWN 
+Solution length: 1
+
+GHBDDDCA-
+012122100
+
+Solution: DOWN 
+Solution length: 1
+
+HDBCGDDA-
+112102200
+
+Solution: DOWN 
+Solution length: 1
+
+DGBCHDDA-
+102112200
+
+Solution: DOWN 
+Solution length: 1
+
+DGBHDDC-A
+102122100
+
+Solution: LEFT DOWN 
+Solution length: 2
+
+HDBCGDD-A
+112102200
+
+Solution: LEFT DOWN 
+Solution length: 2
+
+DGBCHDD-A
+102112200
+
+Solution: LEFT DOWN 
+Solution length: 2
+
+GHBDDDC-A
+012122100
+
+Solution: LEFT DOWN 
+Solution length: 2
+
+DGBH-DCDA
+102102120
+
+Solution: UP LEFT DOWN 
+Solution length: 3
+
+DGBCHD-DA
+102112020
+
+Solution: LEFT LEFT DOWN 
+Solution length: 3
+
+GHBD-DCDA
+012102120
+
+Solution: UP LEFT DOWN 
+Solution length: 3
+
+HDBCGD-DA
+112102020
+
+Solution: LEFT LEFT DOWN 
+Solution length: 3
+
+DGBHD-CDA
+102120120
+
+Solution: RIGHT UP LEFT DOWN 
+Solution length: 4
+
+GHB-DDCDA
+012012120
+
+Solution: LEFT UP LEFT DOWN 
+Solution length: 4
+
+G-BDHDCDA
+002112120
+
+Solution: UP UP LEFT DOWN 
+Solution length: 4
+
+HDB-GDCDA
+112002120
+
+Solution: UP LEFT LEFT DOWN 
+Solution length: 4
+
+GHBDD-CDA
+012120120
+
+Solution: RIGHT UP LEFT DOWN 
+Solution length: 4
+
+DGB-HDCDA
+102012120
+
+Solution: LEFT UP LEFT DOWN 
+Solution length: 4
+
+D-BHGDCDA
+102102120
+
+Solution: UP UP LEFT DOWN 
+Solution length: 4
+
+-DBHGDCDA
+012102120
+
+Solution: UP UP LEFT LEFT DOWN 
+Solution length: 5
+
+-GBDHDCDA
+002112120
+
+Solution: LEFT UP UP LEFT DOWN 
+Solution length: 5
+

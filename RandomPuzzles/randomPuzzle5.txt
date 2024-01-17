@@ -1,0 +1,306 @@
+CDGDHD-AB
+332313003
+
+Solution: DOWN 
+Solution length: 1
+
+CDGDDB-AH
+332333001
+
+Solution: DOWN 
+Solution length: 1
+
+CDDDGB-AH
+333323001
+
+Solution: DOWN 
+Solution length: 1
+
+CDGDBH-AD
+332331003
+
+Solution: DOWN 
+Solution length: 1
+
+CHDDGD-AB
+313323003
+
+Solution: DOWN 
+Solution length: 1
+
+CDDDHG-AB
+333312003
+
+Solution: DOWN 
+Solution length: 1
+
+CDGDHDA-B
+332313003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CHDDGDA-B
+313323003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDDHGA-B
+333312003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGDDBA-H
+332333001
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGDBHA-D
+332331003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDDGBA-H
+333323001
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGD-DAHB
+332303013
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDDDHGAB-
+333312030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGD-HABD
+332301033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDDDGBAH-
+333323010
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGDHDAB-
+332313030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CHDDGDAB-
+313323030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGDDBAH-
+332333010
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDDD-GAHB
+333302013
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDGDBHAD-
+332331030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGD-BADH
+332303031
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+C-GDDDAHB
+302333013
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDGDH-ABD
+332310033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CDGDB-ADH
+332330031
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CDG-DBADH
+332033031
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-GDDBADH
+302333031
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDGDD-AHB
+332330013
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+C-DDDGAHB
+303332013
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDG-DDAHB
+332033013
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDDDG-AHB
+333320013
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+C-GDDHABD
+302331033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDD-DGAHB
+333032013
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CHDDG-ABD
+313320033
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CDG-DHABD
+332031033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CD-DHGABD
+330312033
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CH-DGDABD
+310323033
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CHDD-GABD
+313302033
+
+Solution: LEFT UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CD-DGDAHB
+330323013
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CD-DDGAHB
+330332013
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+-CDDDGAHB
+033332013
+
+Solution: LEFT UP UP RIGHT DOWN 
+Solution length: 5
+
+C-DDHGABD
+303312033
+
+Solution: LEFT UP RIGHT UP RIGHT DOWN 
+Solution length: 6
+
+C-DDGDAHB
+303323013
+
+Solution: LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+DCD-DGAHB
+333032013
+
+Solution: DOWN LEFT UP UP RIGHT DOWN 
+Solution length: 6
+
+C-HDGDABD
+301323033
+
+Solution: LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CHD-DGABD
+313032033
+
+Solution: LEFT LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+DCDADG-HB
+333032013
+
+Solution: DOWN DOWN LEFT UP UP RIGHT DOWN 
+Solution length: 7
+
+DCDD-GAHB
+333302013
+
+Solution: RIGHT DOWN LEFT UP UP RIGHT DOWN 
+Solution length: 7
+
+DCDADGH-B
+333032103
+
+Solution: RIGHT DOWN DOWN LEFT UP UP RIGHT DOWN 
+Solution length: 8
+
+DCDA-GHDB
+333002133
+
+Solution: UP RIGHT DOWN DOWN LEFT UP UP RIGHT DOWN 
+Solution length: 9
+
+DCDADGHB-
+333032130
+
+Solution: RIGHT RIGHT DOWN DOWN LEFT UP UP RIGHT DOWN 
+Solution length: 9
+

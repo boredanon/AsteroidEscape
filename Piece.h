@@ -23,6 +23,7 @@ class Piece
         void set_piece(PIECE_TYPE pt, ORIENTATION po);
         std::string print_piece() const;
         std::string get_type() const;
+        std::string get_type_compact() const;
 
         static std::string print_as_piece(uint64_t t);
 };

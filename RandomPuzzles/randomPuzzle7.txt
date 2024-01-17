@@ -1,0 +1,36 @@
+DCGDHD-AB
+333231003
+
+Solution: DOWN 
+Solution length: 1
+
+DCGH-DDAB
+333301203
+
+Solution: DOWN 
+Solution length: 1
+
+-CGDHDDAB
+033331203
+
+Solution: DOWN 
+Solution length: 1
+
+DCG-HDDAB
+333031203
+
+Solution: DOWN 
+Solution length: 1
+
+DCGDHDA-B
+333231003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+DCGDHDAB-
+333231030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+

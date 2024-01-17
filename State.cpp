@@ -9,6 +9,17 @@ State::State()
     }
 }
 
+State::State(int numberOfMoves)
+{
+    pieces = new Piece*[12];
+    g=0;
+    for(int i = 0; i < 12; i++){
+        pieces[i] = new Piece();
+    }
+
+    generateRandom2(numberOfMoves);
+}
+
 State::State(std::string ps, std::string orientations)
 {
     pieces = new Piece*[12];
@@ -70,6 +81,8 @@ State::State(std::string ps, std::string orientations)
     for(; i < 12; i++){
         pieces[i] = new Piece(EMPTY, CANONICAL); //Goal piece is Piece[10].
     }
+
+    std::cout << print_board() << print_board2() << std::endl;
 
     if(!is_legal() || empty_amounts>1 || empty_amounts == 0){
 
@@ -170,6 +183,328 @@ State::State(const State& s)
     }
 }
 
+void State::generateRandom() {
+    //std::vector<bool> piecesSpaces = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    std::vector<char> piecesTypes = {'-', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+
+    int notValidCount = 0;
+    for (int i = 0; i < 9; ++i) {
+        int randomType = rand() % piecesTypes.size();
+        int randomOrientation = rand() % 4;
+        
+        std::pair<int,int> piece;
+        switch(piecesTypes[randomType])
+        {
+            case '-':
+                piece.first = (int)EMPTY;
+                current_empty=i;
+            break;
+            case 'A':
+                piece.first = (int)SG_426A;
+                current_ship=i;
+            break;
+            case 'B':
+                piece.first = (int)SG_426B;
+            break;
+            case 'C':
+                piece.first = (int)SG_426C;
+            break;
+            case 'D':
+            case 'E':
+            case 'F':
+                piece.first = (int)SG_426DEF;
+            break;
+            case 'G':
+                piece.first = (int)SG_426G;
+            break;
+            case 'H':
+                piece.first = (int)SG_426H;
+            break;
+        }
+        piece.second = randomOrientation;
+
+        set_piece(i, (PIECE_TYPE)piece.first, (ORIENTATION)piece.second);
+
+        if (check_collision(i, pieces[i]->get_p(), -1)){ // Check if valid
+            i--;
+            notValidCount++;
+
+            if (notValidCount >= 4) { // Reset generation
+                for (int j = 0; j < 9; ++j) {
+                    set_piece(j, EMPTY, CANONICAL);
+                }
+                i = 0;
+            }
+        }
+        else {
+            piecesTypes.erase(std::next(piecesTypes.begin(), randomType)); // Erase piece type from vector
+        }
+    }
+
+    print_board();
+    print_board2();
+}
+
+void State::generateRandom2(int numberOfMoves) {
+
+    bool resetting = false;
+    do {
+        resetting = false;
+
+        set_piece(GOAL_POSITION, SG_426A, CANONICAL);
+        current_ship = GOAL_POSITION;
+
+        int current_empty_aux = 0;
+        int randomEmpty = rand() % 3;
+        if (randomEmpty == 0) {
+            current_empty_aux = 4;
+        }
+        else if (randomEmpty == 1) {
+            current_empty_aux = 6;
+        }
+        else {
+            current_empty_aux = 8;
+        }
+        
+        for (int j = 0; j < 9; ++j) {
+            set_piece(j, EMPTY, CANONICAL);
+        }
+        
+        while (true) {
+            bool isValid = true;
+
+            // Setting up initial configuration
+            std::vector<char> piecesTypes = {'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+
+            int notValidCount = 0;
+            for (int i = 0; i < 9; ++i) {
+                if (i == 7 || i == current_empty_aux) continue;
+
+                int randomType = rand() % piecesTypes.size();
+                int randomOrientation = rand() % 4;
+                
+                std::pair<int,int> piece;
+                switch(piecesTypes[randomType])
+                {
+                    case '-':
+                        piece.first = (int)EMPTY;
+                        current_empty=i;
+                    break;
+                    case 'A':
+                        piece.first = (int)SG_426A;
+                        current_ship=i;
+                    break;
+                    case 'B':
+                        piece.first = (int)SG_426B;
+                    break;
+                    case 'C':
+                        piece.first = (int)SG_426C;
+                    break;
+                    case 'D':
+                    case 'E':
+                    case 'F':
+                        piece.first = (int)SG_426DEF;
+                    break;
+                    case 'G':
+                        piece.first = (int)SG_426G;
+                    break;
+                    case 'H':
+                        piece.first = (int)SG_426H;
+                    break;
+                }
+                piece.second = randomOrientation;
+
+                set_piece(i, (PIECE_TYPE)piece.first, (ORIENTATION)piece.second);
+
+                if (check_collision(i, pieces[i]->get_p(), -1)){ // Check if valid
+                    i--;
+                    notValidCount++;
+
+                    if (notValidCount >= 4) { // Reset generation
+                        std::cout << "Resetting generation." << std::endl;
+        
+                        for (int j = 0; j < 9; ++j) {
+                            set_piece(j, EMPTY, CANONICAL);
+                        }
+                        isValid = false;
+                        break;
+                    }
+                }
+                else {
+                    piecesTypes.erase(std::next(piecesTypes.begin(), randomType)); // Erase piece type from vector
+                }
+            }
+
+            if (!isValid) continue;
+
+            if (can_slide(10, 7, DOWN)) {
+                break;
+            }
+            else {
+                for (int j = 0; j < 9; ++j) {
+                    set_piece(j, EMPTY, CANONICAL);
+                }
+            }
+        }
+
+        std::vector<int> path;
+
+        move(std::make_pair<int,int>((int)GOAL_POSITION, UP));
+        path.push_back(DOWN);
+        current_empty = current_empty_aux;
+        previous_move = DOWN_RIGHT;
+
+        std::cout << "Initial Configuration:" << std::endl;
+        std::cout << print_board() << std::endl;
+        std::cout << print_board2() << std::endl;
+
+        // Shuffle the puzzle
+        //int prevMove = -1;
+        for (int i = 0; i < numberOfMoves; ++i) {
+            auto moves = get_legal_moves_without_goal();
+
+            std::cout << "Moves count: " << moves.size() << std::endl;
+
+            if (moves.size() == 0) break;
+
+            int randomMove = rand() % moves.size();
+
+            // if (moves[randomMove].second == opposite((ADJACENCY_DIRECTIONS)prevMove)) {
+
+            // }
+
+            move(moves[randomMove]);
+            path.push_back(opposite((ADJACENCY_DIRECTIONS)moves[randomMove].second));
+            //prevMove = moves[randomMove].second;
+        }
+
+        std::cout << "Final Configuration:" << std::endl;
+        std::cout << print_board() << std::endl;
+        std::cout << print_board2() << std::endl;
+        
+        for(int i = path.size()-1; i >= 0; i--){
+            std::cout << print_direction(path[i]) << " ";
+        }
+        std::cout << std::endl;
+
+        if ((pieces[7]->get_piece_type() == SG_426A && can_slide(7, 10, UP))) {
+            std::cout << "Solution with length one. Resetting generation." << std::endl;
+            resetting = true;
+        }
+
+    } while (resetting);
+}
+
+void State::generateRandom3() {
+    
+    while (true) {
+        bool isValid = true;
+        
+        set_piece(GOAL_POSITION, SG_426A, CANONICAL);
+        current_ship = GOAL_POSITION;
+        current_empty = -1;
+        
+        int current_empty_aux = 0;
+        int nextMove = 0;
+        int randomEmpty = rand() % 3;
+        if (randomEmpty == 0) {
+            current_empty_aux = 4;
+            nextMove = UP;
+        }
+        else if (randomEmpty == 1) {
+            current_empty_aux = 6;
+            nextMove = LEFT;
+        }
+        else {
+            current_empty_aux = 8;
+            nextMove = RIGHT;
+        }
+        
+        for (int j = 0; j < 9; ++j) {
+            set_piece(j, EMPTY, CANONICAL);
+        }
+
+        // Setting up initial configuration
+        std::vector<char> piecesTypes = {'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+
+        int notValidCount = 0;
+        for (int i = 0; i < 9; ++i) {
+            if (i == 7 || i == current_empty_aux) continue;
+
+            int randomType = rand() % piecesTypes.size();
+            int randomOrientation = rand() % 4;
+            
+            std::pair<int,int> piece;
+            switch(piecesTypes[randomType])
+            {
+                case '-':
+                    piece.first = (int)EMPTY;
+                    current_empty=i;
+                break;
+                case 'A':
+                    piece.first = (int)SG_426A;
+                    current_ship=i;
+                break;
+                case 'B':
+                    piece.first = (int)SG_426B;
+                break;
+                case 'C':
+                    piece.first = (int)SG_426C;
+                break;
+                case 'D':
+                case 'E':
+                case 'F':
+                    piece.first = (int)SG_426DEF;
+                break;
+                case 'G':
+                    piece.first = (int)SG_426G;
+                break;
+                case 'H':
+                    piece.first = (int)SG_426H;
+                break;
+            }
+            piece.second = randomOrientation;
+
+            set_piece(i, (PIECE_TYPE)piece.first, (ORIENTATION)piece.second);
+
+            if (check_collision(i, pieces[i]->get_p(), -1)){ // Check if valid
+                i--;
+                notValidCount++;
+
+                if (notValidCount >= 4) { // Reset generation
+                    std::cout << "Resetting generation." << std::endl;
+    
+                    for (int j = 0; j < 9; ++j) {
+                        set_piece(j, EMPTY, CANONICAL);
+                    }
+                    isValid = false;
+                    break;
+                }
+            }
+            else {
+                piecesTypes.erase(std::next(piecesTypes.begin(), randomType)); // Erase piece type from vector
+            }
+        }
+
+        if (!isValid) continue;
+
+        if (can_slide(10, 7, DOWN)) {
+            move(std::make_pair<int,int>((int)GOAL_POSITION, UP));
+            current_empty = current_empty_aux;
+
+            if (can_slide(7, current_empty, opposite((ADJACENCY_DIRECTIONS)nextMove))) {
+                break;
+            }
+        }
+    }
+
+    g = 0;
+
+    std::cout << "Initial Configuration:" << std::endl;
+    std::cout << print_board() << std::endl;
+    std::cout << print_board2() << std::endl;
+}
+
 int State::get_f() const
 {
     return g + h;
@@ -217,6 +552,38 @@ std::string State::print_pieces() const
         
         s+="\n\n";
     }
+    return s;
+}
+
+std::string State::print_pieces_compact() const {
+    std::string s;
+    for (int i = 0; i < 9; i++) {
+        s += pieces[i]->get_type_compact()[0];
+    }
+    s += '\n';
+    for (int i = 0; i < 9; i++) {
+        s += pieces[i]->get_type_compact()[1];
+    }
+    return s;
+}
+
+std::string State::print_pieces_type_compact() const {
+    std::string s;
+    
+    for (int i = 0; i < 9; i++) {
+        s += pieces[i]->get_type_compact()[0];
+    }
+
+    return s;
+}
+
+std::string State::print_pieces_orientation_compact() const {
+    std::string s;
+    
+    for (int i = 0; i < 9; i++) {
+        s += pieces[i]->get_type_compact()[1];
+    }
+
     return s;
 }
 
@@ -378,6 +745,15 @@ std::vector<std::pair<int, int>> State::get_adjacencies(int i) const
     return a;
 }
 
+int State::get_current_ship() {
+    return current_ship;
+}
+
+int State::get_current_empty() {
+    return current_empty;
+}
+
+// m: <position, direction>
 void State::move(std::pair<int, int> m)
 {
     auto dir = m.second;
@@ -571,6 +947,25 @@ std::vector<std::pair<int,int>> State::get_legal_moves() const
             }
         }
     }
+    return v;
+}
+
+std::vector<std::pair<int,int>> State::get_legal_moves_without_goal() const
+{
+    std::vector<std::pair<int,int>> v;
+
+    //Movements.
+    auto adj = get_adjacencies(current_empty);
+    for(const auto& a : adj){
+        if(a.second > 3 || !pieces[a.first]->get_p() || (!CAN_RETURN && previous_move == a.second)){
+            continue;
+        }
+
+        if(can_slide(a.first, current_empty, a.second)){
+            v.push_back(std::make_pair(a.first, opposite((ADJACENCY_DIRECTIONS)a.second)));
+        }
+    }
+
     return v;
 }
 

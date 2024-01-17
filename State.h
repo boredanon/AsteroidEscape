@@ -18,27 +18,39 @@ class State
         int calculateH(); // CALCULATE the heuristic, on start and after moving.
         ADJACENCY_DIRECTIONS previous_move = DOWN_RIGHT;
         double accumulated_entropy=0.0;
+        void generateRandom();
+        void generateRandom2(int numberOfMoves);
     public:
         int g;
         int h;
         State();
         State(const State& s);
+        State(int numberOfMoves);
         State(std::string pieces, std::string orientations);
         void init(); // Init board
         void set_piece(int index, PIECE_TYPE pt, ORIENTATION po);
         Piece* get_piece(int index) const; // Get a particular piece
         void set_empty(); // Fix.
         Piece* get_empty() const; // Get the empty piece.
+        int get_current_ship();
+        int get_current_empty();
         int get_f() const; // IDA*, A*
         int get_h() const; // 
         int get_g() const;
         std::vector<std::pair<int,int>> get_legal_moves() const;
+        std::vector<std::pair<int,int>> get_legal_moves_without_goal() const;
         bool is_legal() const;
         bool can_slide(int from, int to, int direction) const;
         void move(std::pair<int,int> m);
         bool is_goal() const;
         double calculate_entropy(std::vector<double>& child_entropies) const;
+        
+        void generateRandom3();
+
         std::string print_pieces() const;
+        std::string print_pieces_compact() const;
+        std::string print_pieces_type_compact() const;
+        std::string print_pieces_orientation_compact() const;
         std::string print_board() const;
         std::string print_board2() const;
         ~State();

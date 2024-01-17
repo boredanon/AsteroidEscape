@@ -107,3 +107,48 @@ std::string Piece::get_type() const
 
     return s;
 }
+
+std::string Piece::get_type_compact() const {
+    std::string s;
+    switch (p_type)
+    {
+        case SG_426A:
+            s+="A";
+            break;
+        case SG_426B:
+            s+="B";
+            break;
+        case SG_426C:
+            s+="C";
+            break;
+        case SG_426DEF:
+            s+="D";
+            break;
+        case SG_426G:
+            s+="G";
+            break;
+        case SG_426H:
+            s+="H";
+            break;
+        default:
+            s+="-";
+            break;
+    }
+    switch(o)
+    {
+        case CANONICAL:
+            s+="0";
+            break;
+        case NINETY:
+            s+="1";
+            break;
+        case ONE_EIGHTY:
+            s+="2";
+            break;
+        case TWO_SEVENTY:
+            s+="3";
+            break;
+    }
+
+    return s;
+}

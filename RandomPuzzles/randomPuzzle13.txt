@@ -1,0 +1,12 @@
+DGBDDHCA-
+213303100
+
+Solution: DOWN 
+Solution length: 1
+
+DGBDDHC-A
+213303100
+
+Solution: LEFT DOWN 
+Solution length: 2
+

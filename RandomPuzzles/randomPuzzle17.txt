@@ -1,0 +1,18 @@
+DDDBHG-AC
+033030003
+
+Solution: DOWN 
+Solution length: 1
+
+DDDBHGA-C
+033030003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+DDDBHGAC-
+033030030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+

@@ -1,0 +1,2070 @@
+CDDHGB-AD
+233113000
+
+Solution: DOWN 
+Solution length: 1
+
+CGDHDD-AB
+213103003
+
+Solution: DOWN 
+Solution length: 1
+
+CGDHBD-AD
+213130003
+
+Solution: DOWN 
+Solution length: 1
+
+CDBHDG-AD
+233131000
+
+Solution: DOWN 
+Solution length: 1
+
+CBDHDG-AD
+233101003
+
+Solution: DOWN 
+Solution length: 1
+
+CDDHGD-AB
+233110003
+
+Solution: DOWN 
+Solution length: 1
+
+CBDHGD-AD
+233113000
+
+Solution: DOWN 
+Solution length: 1
+
+CDBHGD-AD
+233110003
+
+Solution: DOWN 
+Solution length: 1
+
+CGDHDD-AB
+213130003
+
+Solution: DOWN 
+Solution length: 1
+
+CGDHDB-AD
+213103003
+
+Solution: DOWN 
+Solution length: 1
+
+CGDHDB-AD
+213133000
+
+Solution: DOWN 
+Solution length: 1
+
+CDGHDD-AB
+201133003
+
+Solution: DOWN 
+Solution length: 1
+
+CDDHDG-AB
+230131003
+
+Solution: DOWN 
+Solution length: 1
+
+CGDHDB-AD
+210133003
+
+Solution: DOWN 
+Solution length: 1
+
+CDDHGD-AB
+230113003
+
+Solution: DOWN 
+Solution length: 1
+
+CDGHDB-AD
+231103003
+
+Solution: DOWN 
+Solution length: 1
+
+CBDHDG-AD
+230131003
+
+Solution: DOWN 
+Solution length: 1
+
+CDDHDG-AB
+233101003
+
+Solution: DOWN 
+Solution length: 1
+
+CDGHDD-AB
+231103003
+
+Solution: DOWN 
+Solution length: 1
+
+CGBHDD-AD
+213133000
+
+Solution: DOWN 
+Solution length: 1
+
+CBDHGD-AD
+230113003
+
+Solution: DOWN 
+Solution length: 1
+
+CBDHDG-AD
+233131000
+
+Solution: DOWN 
+Solution length: 1
+
+CGBHDD-AD
+213130003
+
+Solution: DOWN 
+Solution length: 1
+
+CBDHGD-AD
+233110003
+
+Solution: DOWN 
+Solution length: 1
+
+CGBHDD-AD
+213103003
+
+Solution: DOWN 
+Solution length: 1
+
+CDBHDG-AD
+233101003
+
+Solution: DOWN 
+Solution length: 1
+
+CDBHGD-AD
+233113000
+
+Solution: DOWN 
+Solution length: 1
+
+CDGHDB-AD
+231133000
+
+Solution: DOWN 
+Solution length: 1
+
+CDGHBD-AD
+201133003
+
+Solution: DOWN 
+Solution length: 1
+
+CDGHDB-AD
+201133003
+
+Solution: DOWN 
+Solution length: 1
+
+CGDHBD-AD
+213133000
+
+Solution: DOWN 
+Solution length: 1
+
+CDBHDG-AD
+203131003
+
+Solution: DOWN 
+Solution length: 1
+
+CDDHGD-AB
+203113003
+
+Solution: DOWN 
+Solution length: 1
+
+CDBHGD-AD
+203113003
+
+Solution: DOWN 
+Solution length: 1
+
+CDDHGB-AD
+230113003
+
+Solution: DOWN 
+Solution length: 1
+
+CDGHBD-AD
+231130003
+
+Solution: DOWN 
+Solution length: 1
+
+CGDHBD-AD
+210133003
+
+Solution: DOWN 
+Solution length: 1
+
+CDDHDG-AB
+203131003
+
+Solution: DOWN 
+Solution length: 1
+
+CDDHGB-AD
+203113003
+
+Solution: DOWN 
+Solution length: 1
+
+CGDHDD-AB
+210133003
+
+Solution: DOWN 
+Solution length: 1
+
+CDGHDD-AB
+231130003
+
+Solution: DOWN 
+Solution length: 1
+
+CDGHBD-AD
+231133000
+
+Solution: DOWN 
+Solution length: 1
+
+CDDHGBA-D
+233113000
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGDHBDA-D
+213130003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CBDHGDA-D
+233113000
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDHGDA-B
+230113003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGHDDA-B
+231130003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGHBDA-D
+231133000
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGDHDDA-B
+213103003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDBHDGA-D
+233131000
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDHGDA-B
+233110003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CBDHDGA-D
+233101003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDBHGDA-D
+233110003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGDHDBA-D
+213103003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGDHDBA-D
+210133003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGDHDDA-B
+213130003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGDHDBA-D
+213133000
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDHDGA-B
+230131003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGHDDA-B
+201133003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGHDBA-D
+231103003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDHDGA-B
+233101003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CBDHGDA-D
+233110003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGDHDDA-B
+210133003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CBDHDGA-D
+230131003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGHDDA-B
+231103003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGBHDDA-D
+213130003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGBHDDA-D
+213133000
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CBDHDGA-D
+233131000
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CBDHGDA-D
+230113003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGBHDDA-D
+213103003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDBHGDA-D
+233113000
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGDHBDA-D
+213133000
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDHGBA-D
+203113003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDBHDGA-D
+233101003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGHDBA-D
+231133000
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGHDBA-D
+201133003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGHBDA-D
+201133003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDBHDGA-D
+203131003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDBHGDA-D
+203113003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDHDGA-B
+203131003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDHGDA-B
+203113003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDHGBA-D
+230113003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CGDHBDA-D
+210133003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDGHBDA-D
+231130003
+
+Solution: RIGHT DOWN 
+Solution length: 2
+
+CDDHGBAD-
+233113000
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CBDHGDAD-
+233113000
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGDH-DADB
+213103003
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGDHDBAD-
+213133000
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGDH-DABD
+213103030
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGDH-DABD
+210103033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDGHBDAD-
+231130030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGBH-DADD
+213103003
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGDH-DABD
+213100033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CBDHDGAD-
+233131000
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGBHDDAD-
+213133000
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDDHGDAB-
+230113030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGHBDAD-
+231133000
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGBH-DADD
+213100033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDGHDDAB-
+231103030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGH-DADB
+231100033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CBDHDGAD-
+230131030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGDH-DADB
+210103033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDBH-GADD
+233101030
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CBDH-GADD
+233101003
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGDH-DADB
+213100033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDDHDGAB-
+233101030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGHDBAD-
+231103030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDDHGDAB-
+233110030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGH-DADB
+201103033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDDHDGAB-
+230131030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDBHGDAD-
+233110030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGDHDBAD-
+210133030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGDH-BADD
+213103030
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGDHDDAB-
+213130030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGDH-BADD
+213103003
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGDH-BADD
+210103033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGDHDBAD-
+213103030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CBDHDGAD-
+233101030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDDH-GADB
+230101033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDGH-BADD
+231103003
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGBHDDAD-
+213130030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDDHGBAD-
+230113030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDBHDGAD-
+233131000
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGDHDDAB-
+213103030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGHDDAB-
+201133030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGH-DABD
+231103030
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDGHDDAB-
+231130030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDDH-GADB
+233101003
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDGH-DADB
+231103003
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGDHBDAD-
+213130030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CBDHGDAD-
+233110030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CBDH-GADD
+230101033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGDHDDAB-
+210133030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGBH-DADD
+213103030
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CBDHGDAD-
+230113030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDDHGBAD-
+203113030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDDHGDAB-
+203113030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CBDH-GADD
+233101030
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGBHDDAD-
+213103030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CGDHBDAD-
+213133000
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDBHGDAD-
+233113000
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDBH-GADD
+233101003
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDGH-BADD
+201103033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDDH-GADB
+203101033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDGH-DABD
+231100033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CGDHBDAD-
+210133030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGHDBAD-
+231133000
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDDHDGAB-
+203131030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDBHDGAD-
+203131030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGHBDAD-
+201133030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGH-DABD
+201103033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDBHGDAD-
+203113030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGHDBAD-
+201133030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDGH-BADD
+231103030
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDBH-GADD
+203101033
+
+Solution: UP RIGHT DOWN 
+Solution length: 3
+
+CDBHDGAD-
+233101030
+
+Solution: RIGHT RIGHT DOWN 
+Solution length: 3
+
+CDDHG-ADB
+233110003
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+C-DHGDADB
+203113003
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDGHB-ADD
+231130030
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CDGHD-ABD
+231100033
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CGDHB-ADD
+213130003
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CDB-HGADD
+203011033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDBHD-ADG
+233100031
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CBDHG-ADD
+233110003
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+C-BHDGADD
+203101033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+C-GHDBADD
+201133030
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CGDHD-ADB
+213130003
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CGDHD-ABD
+210130033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+C-BHDGADD
+203131003
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CGDHD-ABD
+213130030
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CGBHD-ADD
+213130003
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CBDHD-ADG
+233130001
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CGB-HDADD
+213010033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CGDHD-ABD
+213100033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+C-DHGDABD
+203110033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDGHB-ADD
+231130003
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CDDHG-ABD
+230110033
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+C-GHDDADB
+201130033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CGDHD-ADB
+210130033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CGD-HDADB
+213010033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CGDHB-ADD
+213130030
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CBDHD-ADG
+230130031
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CDBHG-ADD
+233110030
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CGDHD-ADB
+213100033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CBD-HGADD
+233011003
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-GHDDABD
+201133030
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CGBHD-ADD
+213130030
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+C-DHGDADB
+203110033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDGHD-ADB
+201130033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+C-DHGBADD
+203113030
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDDHG-ABD
+233110030
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+C-DHGBADD
+200113033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+C-GHDBADD
+201133003
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDG-HDADB
+201013033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDB-HGADD
+233011030
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-GHDDADB
+201103033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+C-DHGBADD
+203113003
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDGHD-ADB
+231130003
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+C-BHDGADD
+203131030
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDDHG-ADB
+230110033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CGDHB-ADD
+210130033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CBDHD-ADG
+233100031
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CDG-HBADD
+231013003
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-GHDDADB
+201133003
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDG-HBADD
+231013030
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CGD-HBADD
+210013033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-DHGDADB
+200113033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDD-HGADB
+230011033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-DHDGADB
+200131033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CGD-HBADD
+213013003
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDD-HGADB
+233011003
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDG-HDADB
+231010033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDG-HDABD
+231013030
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-BHGDADD
+203110033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDG-HDABD
+201013033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CGB-HDADD
+213013003
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CBDHG-ADD
+230110033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CGD-HDABD
+210013033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDDHG-ADB
+203110033
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CGD-HDABD
+213013030
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-BHGDADD
+203113030
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CGD-HDADB
+213013003
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDBHG-ADD
+203110033
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CDG-HDADB
+231013003
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDGHB-ADD
+201130033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CGD-HBADD
+213013030
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDBHD-ADG
+233130001
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CDGHD-ABD
+201130033
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CDB-HGADD
+233011003
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-GHDDABD
+201103033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDG-HDABD
+231010033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-GHDBADD
+201103033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDBHD-ADG
+203130031
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CGD-HDADB
+210013033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDGHD-ADB
+231100033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CDGHD-ABD
+231130030
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CGBHD-ADD
+213100033
+
+Solution: RIGHT UP RIGHT DOWN 
+Solution length: 4
+
+CGD-HDABD
+213010033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CBDHG-ADD
+233110030
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+CBD-HGADD
+230011033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDDHG-ABD
+203110033
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+C-BHGDADD
+203113003
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+C-DHGDABD
+200113033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CGB-HDADD
+213013030
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-DHGDABD
+203113030
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CBD-HGADD
+233011030
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+C-DHDGADB
+203131003
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDD-HGADB
+203011033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CDBHG-ADD
+233110003
+
+Solution: UP RIGHT RIGHT DOWN 
+Solution length: 4
+
+C-GHDDABD
+201130033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+C-DHDGADB
+203101033
+
+Solution: UP UP RIGHT DOWN 
+Solution length: 4
+
+CDG-HBADD
+201013033
+
+Solution: LEFT UP RIGHT DOWN 
+Solution length: 4
+
+CD-HGDADB
+230113003
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CG-HBDADD
+210133003
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CG-HDBADD
+210133030
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CG-HDDABD
+210103033
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CD-HGBADD
+200113033
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CD-HGDABD
+230113030
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CBDH-DADG
+230103031
+
+Solution: LEFT UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CDBH-DADG
+233100031
+
+Solution: LEFT UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CG-HBDADD
+210130033
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CB-HGDADD
+230110033
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CD-HGDADB
+200113033
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CDBH-DADG
+203103031
+
+Solution: LEFT UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CG-HDDADB
+210133003
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CB-HDGADD
+230131003
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CG-HDDABD
+210133030
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CD-HGDABD
+230110033
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CDDH-GABD
+230101033
+
+Solution: LEFT UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CD-HGBADD
+230113030
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CG-HDDADB
+210130033
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CG-HDDADB
+210103033
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CD-HGDADB
+230110033
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CD-HDGADB
+200131033
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CD-HDGABD
+200131033
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CG-HDBADD
+210103033
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CD-HDGABD
+230101033
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CDDH-GABD
+233101030
+
+Solution: LEFT UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CD-HDGABD
+230131030
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CG-HDDABD
+210130033
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CB-HDGADD
+230131030
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CBDH-DADG
+233100031
+
+Solution: LEFT UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CB-HGDADD
+230113030
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CD-HDBADG
+200133031
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CB-HDDADG
+230103031
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CBDH-DADG
+233103001
+
+Solution: LEFT UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CG-HBDADD
+210133030
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CDBH-DADG
+233103001
+
+Solution: LEFT UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CD-HDBADG
+230133001
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CD-HDGADB
+230131003
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CD-HDGADB
+230101033
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CB-HDGADD
+230101033
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CDDH-GABD
+203101033
+
+Solution: LEFT UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CB-HGDADD
+230113003
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CD-HGDABD
+200113033
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CG-HDBADD
+210133003
+
+Solution: UP RIGHT UP RIGHT DOWN 
+Solution length: 5
+
+CB-HDDADG
+230133001
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CD-HGBADD
+230113003
+
+Solution: RIGHT UP UP RIGHT DOWN 
+Solution length: 5
+
+CB-HDDADG
+230130031
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+CD-HDBADG
+230103031
+
+Solution: UP UP RIGHT RIGHT DOWN 
+Solution length: 5
+
+C-GHBDADD
+201133003
+
+Solution: LEFT UP RIGHT UP RIGHT DOWN 
+Solution length: 6
+
+C-BHDDADG
+203130031
+
+Solution: UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-BHDDADG
+203103031
+
+Solution: UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CBDHDDA-G
+230133001
+
+Solution: DOWN LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-DHDBADG
+203103031
+
+Solution: LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CDB-HDADG
+233010031
+
+Solution: LEFT LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CDBHDDA-G
+233130001
+
+Solution: DOWN LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-DHDGABD
+203101033
+
+Solution: LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CDB-HDADG
+203013031
+
+Solution: LEFT LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-GHBDADD
+201130033
+
+Solution: LEFT UP RIGHT UP RIGHT DOWN 
+Solution length: 6
+
+C-DHDGABD
+200131033
+
+Solution: UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CDD-HGABD
+230011033
+
+Solution: LEFT LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-DHDGABD
+203131030
+
+Solution: UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CBDHDDA-G
+233130001
+
+Solution: DOWN LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CBDHDDA-G
+233103001
+
+Solution: DOWN LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-DHBDADG
+203130031
+
+Solution: UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CBD-HDADG
+233013001
+
+Solution: LEFT LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-BHDDADG
+203133001
+
+Solution: UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-DHDBADG
+203133001
+
+Solution: LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CDD-HGABD
+203011033
+
+Solution: LEFT LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CDBHDDA-G
+203133001
+
+Solution: DOWN LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CBD-HDADG
+230013031
+
+Solution: LEFT LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-DHBDADG
+200133031
+
+Solution: UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CDD-HGABD
+233011030
+
+Solution: LEFT LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CBD-HDADG
+233010031
+
+Solution: LEFT LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-DHDBADG
+200133031
+
+Solution: LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-GHBDADD
+201133030
+
+Solution: LEFT UP RIGHT UP RIGHT DOWN 
+Solution length: 6
+
+CDB-HDADG
+233013001
+
+Solution: LEFT LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+C-DHBDADG
+203133001
+
+Solution: UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CDBHDDA-G
+233103001
+
+Solution: DOWN LEFT UP RIGHT RIGHT DOWN 
+Solution length: 6
+
+CD-HBDADG
+230130031
+
+Solution: RIGHT UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 7
+
+CDDH-BADG
+233103001
+
+Solution: DOWN LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 7
+
+CD-HBDADG
+230133001
+
+Solution: RIGHT UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 7
+
+CD-HBDADG
+200133031
+
+Solution: RIGHT UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 7
+
+CDDH-BADG
+203103031
+
+Solution: DOWN LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 7
+
+CDDH-BADG
+230103031
+
+Solution: DOWN LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 7
+
+CDDHB-ADG
+230130031
+
+Solution: DOWN RIGHT UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 8
+
+CDD-HBADG
+203013031
+
+Solution: LEFT DOWN LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 8
+
+CDDHDBA-G
+203133001
+
+Solution: DOWN DOWN LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 8
+
+CDDHDBA-G
+230133001
+
+Solution: DOWN DOWN LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 8
+
+CDDHB-ADG
+233130001
+
+Solution: RIGHT DOWN LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 8
+
+CDD-HBADG
+230013031
+
+Solution: LEFT DOWN LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 8
+
+CDDHB-ADG
+203130031
+
+Solution: DOWN RIGHT UP LEFT UP RIGHT RIGHT DOWN 
+Solution length: 8
+
+CDD-HBADG
+233013001
+
+Solution: LEFT DOWN LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 8
+
+CDDHDBA-G
+233103001
+
+Solution: DOWN DOWN LEFT UP UP RIGHT RIGHT DOWN 
+Solution length: 8
+
