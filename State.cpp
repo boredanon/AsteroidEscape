@@ -1,9 +1,14 @@
 #include "State.h"
+#include <cctype>
+#include <cstdlib>
 
 State::State()
 {
     pieces = new Piece*[12];
     g=0;
+    h=0;
+    current_empty=-1;
+    current_ship=-1;
     for(int i = 0; i < 12; i++){
         pieces[i] = new Piece();
     }
@@ -11,60 +16,76 @@ State::State()
 
 State::State(std::string ps, std::string orientations)
 {
+    // Validate the two board lines before allocating anything.
+    auto strip = [](std::string& line) {
+        while(!line.empty() && (line.back() == '\r' || line.back() == ' ' || line.back() == '\t')) line.pop_back();
+    };
+    strip(ps);
+    strip(orientations);
+    if(ps.size() < 9 || orientations.size() < 9){
+        throw std::runtime_error("Illegal board: each of the two lines must have 9 characters "
+                                 "(line 1: pieces, line 2: orientations).");
+    }
+    int ships = 0;
+    for(int k = 0; k < 9; k++){
+        if(std::string("-ABCDEFGH").find(ps[k]) == std::string::npos){
+            throw std::runtime_error(std::string("Illegal board: unknown piece '") + ps[k] + "' in cell "
+                                     + std::to_string(k) + " (valid: - A B C D E F G H).");
+        }
+        bool empty_cell = ps[k] == '-'; // The orientation of the empty cell is ignored ('-' is common).
+        if(!empty_cell && (orientations[k] < '0' || orientations[k] > '3')){
+            throw std::runtime_error(std::string("Illegal board: unknown orientation '") + orientations[k]
+                                     + "' in cell " + std::to_string(k) + " (valid: 0 1 2 3).");
+        }
+        if(ps[k] == 'A') ships++;
+    }
+    if(ships != 1){
+        throw std::runtime_error("Illegal board: there must be exactly one spaceship (A), found "
+                                 + std::to_string(ships) + ".");
+    }
+
     pieces = new Piece*[12];
     current_empty=-1;
+    current_ship=-1;
     int empty_amounts = 0;
     g=0;
 
     int i = 0;
     for(i = 0; i < 9; i++)
     {
-        std::pair<int,int> piece;
+        PIECE_TYPE type = EMPTY;
         switch(ps[i])
         {
             case '-':
-                piece.first = (int)EMPTY;
+                type = EMPTY;
                 current_empty=i;
                 empty_amounts++;
             break;
             case 'A':
-                piece.first = (int)SG_426A;
+                type = SG_426A;
                 current_ship=i;
             break;
             case 'B':
-                piece.first = (int)SG_426B;
+                type = SG_426B;
             break;
             case 'C':
-                piece.first = (int)SG_426C;
+                type = SG_426C;
             break;
-            case 'D':
-                piece.first = (int)SG_426DEF;
+            case 'D': // D, E and F are the same shape.
+            case 'E':
+            case 'F':
+                type = SG_426DEF;
             break;
             case 'G':
-                piece.first = (int)SG_426G;
+                type = SG_426G;
             break;
             case 'H':
-                piece.first = (int)SG_426H;
+                type = SG_426H;
             break;
         }
 
-        switch(orientations[i])
-        {
-            case '0':
-                piece.second = (int)CANONICAL;
-            break;
-            case '1':
-                piece.second = (int)NINETY;
-            break;
-            case '2':
-                piece.second = (int)ONE_EIGHTY;
-            break;
-            case '3':
-                piece.second = (int)TWO_SEVENTY;
-            break;
-        }
-
-        pieces[i] = new Piece((PIECE_TYPE)piece.first, (ORIENTATION)piece.second);
+        ORIENTATION o = type == EMPTY ? CANONICAL : (ORIENTATION)(orientations[i] - '0');
+        pieces[i] = new Piece(type, o);
     }
 
     for(; i < 12; i++){
@@ -77,10 +98,11 @@ State::State(std::string ps, std::string orientations)
             delete pieces[i];
         }
         delete [] pieces;
-        throw std::runtime_error("Illegal board.");
+        throw std::runtime_error(empty_amounts != 1
+            ? "Illegal board: there must be exactly one empty cell (-), found " + std::to_string(empty_amounts) + "."
+            : std::string("Illegal board: two pieces overlap."));
     }
     h = calculateH();
-    std::cout << h << std::endl;
 }
 
 int State::calculateH(){
@@ -93,18 +115,18 @@ int State::calculateH(){
         break;
         case DISTANCE:
         {
-            auto horizontal_distance = (current_ship/3 - GOAL_POSITION/3);
-            if(horizontal_distance < 0){
-                horizontal_distance*=-1;
-            }
-            
-            auto vertical_distance = (current_ship%3 - current_ship%3);
-            if(vertical_distance < 0)
-            {
-                vertical_distance *= -1;
-            }
-            calculated_h += horizontal_distance+vertical_distance;
+            // Manhattan distance (in cells) from the ship to the exit cell. The ship moves one cell
+            // per move, so this is admissible and consistent.
+            int row_distance = std::abs(current_ship / WIDTH - GOAL_POSITION / WIDTH);
+            int column_distance = std::abs(current_ship % WIDTH - GOAL_POSITION % WIDTH);
+            calculated_h += row_distance + column_distance;
         }
+        break;
+        case ROWDISTANCE:
+            // Rows between the ship and the exit only. This is what DISTANCE computed before the
+            // column term was fixed (it subtracted current_ship%3 from itself); kept so that results
+            // obtained with the old DISTANCE can be reproduced.
+            calculated_h += std::abs(current_ship / WIDTH - GOAL_POSITION / WIDTH);
         break;
         case TWOONE:
             if(current_ship%3 != 1){
@@ -220,19 +242,124 @@ std::string State::print_pieces() const
     return s;
 }
 
+// Draws the whole board as one picture.
+//
+// Every piece is an 8x8 bitmap whose 4x4 centre is its own cell and whose 2-pixel border reaches
+// into the neighbouring cells (the physical pieces interlock). All bitmaps are placed on a common
+// 16x16 canvas (cell i starts at pixel (4*row, 4*col)), so the drawing shows the real shapes:
+//   - each pixel shows the letter of its piece: UPPERCASE inside the piece's own cell,
+//     lowercase where it sticks out into a neighbouring cell;
+//   - '.' is free space inside the board, '*' would be two pieces overlapping (illegal board);
+//   - the frame is the 3x3 board, ':' separates cells, and the exit is below the middle
+//     bottom cell (cell 7).
+// Below the picture: one line per cell (letter, name, orientation) and the search state.
 std::string State::print_board() const
 {
-    std::string s;
+    const int CANVAS_ROWS = 20; // 16 board rows + the exit cell below cell 7.
+    const int CANVAS_COLS = 16;
+    char canvas[CANVAS_ROWS][CANVAS_COLS];
 
-    for(int i = 0; i < 9; i++)
+    for(int y = 0; y < CANVAS_ROWS; y++)
+        for(int x = 0; x < CANVAS_COLS; x++)
+            canvas[y][x] = (y >= 2 && y < 14 && x >= 2 && x < 14) ? '.' : ' ';
+
+    auto owner_cell = [](int y, int x) -> int { // Cell whose 4x4 interior contains pixel (y, x).
+        if(y < 2 || x < 2 || x >= 14) return -1;
+        int r = (y - 2) / 4, c = (x - 2) / 4;
+        if(r < 3) return 3 * r + c;
+        return (r == 3 && c == 1) ? GOAL_POSITION : -1;
+    };
+
+    for(int i = 0; i < 11; i++)
     {
-        s+=std::to_string(i) + ") " + pieces[i]->get_type() + " | ";
-        if(i==2 || i==5 || i == 8){
-            s+="\n";
-        }
+        if(i == 9 || pieces[i]->get_piece_type() == EMPTY) continue; // 9 is not part of the board.
+        int r = i / 3, c = i % 3;
+        char letter = pieces[i]->get_letter();
+        for(int y = 0; y < 8; y++)
+            for(int x = 0; x < 8; x++)
+            {
+                if(!pieces[i]->has_pixel(y, x)) continue;
+                int Y = 4 * r + y, X = 4 * c + x;
+                if(Y >= CANVAS_ROWS || X >= CANVAS_COLS) continue;
+                char ch = owner_cell(Y, X) == i ? letter : (char)std::tolower(letter);
+                canvas[Y][X] = (canvas[Y][X] == '.' || canvas[Y][X] == ' ') ? ch : '*';
+            }
     }
 
-    return s;
+    auto row_has_content = [&](int y) {
+        for(int x = 0; x < CANVAS_COLS; x++)
+            if(canvas[y][x] != ' ' && canvas[y][x] != '.') return true;
+        return false;
+    };
+
+    // Pixel row y: 2 outer pixels | 4 px : 4 px : 4 px | 2 outer pixels, then the row label.
+    auto pixel_row = [&](int y) {
+        bool in_frame = y >= 2 && y < 14;
+        bool in_exit = y >= 14 && y < 18;
+        std::string line = "  ";
+        for(int x = 0; x < CANVAS_COLS; x++)
+        {
+            if(x == 2 || x == 14) line += in_frame ? '|' : ' ';
+            else if(x == 6 || x == 10) line += in_frame ? ':' : (in_exit ? '|' : ' ');
+            line += canvas[y][x];
+            line += ' ';
+        }
+        if(in_frame && (y - 2) % 4 == 1) line += "  row " + std::to_string((y - 2) / 4);
+        while(!line.empty() && line.back() == ' ') line.pop_back();
+        return line + "\n";
+    };
+
+    auto rule = [](const std::string& left, const std::string& mid, const std::string& right) {
+        return "      +" + left + "+" + mid + "+" + right + "+\n";
+    };
+
+    std::string out;
+    out += "        col 0    col 1    col 2\n";
+    if(row_has_content(0)) out += pixel_row(0);
+    if(row_has_content(1)) out += pixel_row(1);
+    out += rule("--------", "--------", "--------");
+    for(int y = 2; y < 14; y++)
+    {
+        if(y == 6 || y == 10) out += rule("- - - - ", "- - - - ", "- - - - ");
+        out += pixel_row(y);
+    }
+    out += rule("--------", "  EXIT  ", "--------");
+    for(int y = 14; y < CANVAS_ROWS; y++)
+        if(row_has_content(y)) out += pixel_row(y);
+    out += "\n";
+
+    // Legend: one line per cell.
+    out += "  cell  (r,c)  piece  name                        orientation\n";
+    for(int i = 0; i < 9; i++)
+    {
+        const Piece* p = pieces[i];
+        std::string line = "  " + std::to_string(i) + "     (" + std::to_string(i / 3) + "," + std::to_string(i % 3) + ")  ";
+        if(p->get_piece_type() == EMPTY)
+        {
+            line += "  -    (empty)";
+        }
+        else
+        {
+            std::string name = p->get_name();
+            line += "  ";
+            line += p->get_letter();
+            line += "    " + name + std::string(name.size() < 28 ? 28 - name.size() : 1, ' ');
+            line += std::to_string(p->get_degrees()) + " deg";
+        }
+        out += line + "\n";
+    }
+
+    // Search state.
+    out += "\n";
+    if(is_goal())
+        out += "  Ship: has left the board (goal reached).\n";
+    else
+        out += "  Ship: cell " + std::to_string(current_ship) + " (row " + std::to_string(current_ship / 3)
+             + ", col " + std::to_string(current_ship % 3) + ")   exit: below cell 7\n";
+    out += "  Empty cell: " + std::to_string(current_empty) + "\n";
+    out += "  g = " + std::to_string(g) + "   h = " + std::to_string(h)
+         + " (" + heuristic_name(heuristic) + ")   f = " + std::to_string(g + h) + "\n";
+    return out;
 }
 
 std::string State::print_board2() const

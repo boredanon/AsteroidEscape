@@ -61,6 +61,44 @@ std::string Piece::print_piece() const
     return bs + "\n";
 } 
 
+char Piece::get_letter() const
+{
+    switch(p_type)
+    {
+        case SG_426A: return 'A';
+        case SG_426B: return 'B';
+        case SG_426C: return 'C';
+        case SG_426DEF: return 'D';
+        case SG_426G: return 'G';
+        case SG_426H: return 'H';
+        default: return '-';
+    }
+}
+
+std::string Piece::get_name() const
+{
+    switch(p_type)
+    {
+        case SG_426A: return "spaceship";
+        case SG_426B: return "big asteroid";
+        case SG_426C: return "big asteroid (corner)";
+        case SG_426DEF: return "small asteroid (D/E/F)";
+        case SG_426G: return "small asteroids, diagonal";
+        case SG_426H: return "small asteroids, aligned";
+        default: return "empty";
+    }
+}
+
+int Piece::get_degrees() const
+{
+    return 90 * (int)o;
+}
+
+bool Piece::has_pixel(int y, int x) const
+{
+    return (p >> (63 - (8 * y + x))) & 1ULL;
+}
+
 std::string Piece::get_type() const
 {
     std::string s;

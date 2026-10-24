@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <bitset>
+#include <cstdint>
 
 enum PIECE_TYPE
 {
@@ -42,7 +43,8 @@ enum HEURISTIC
     TWOONE,
     OBSTACLES0,
     OBSTACLES1,
-    DISTANCE
+    DISTANCE,
+    ROWDISTANCE
 };
 
 extern HEURISTIC heuristic;
@@ -65,5 +67,6 @@ extern bool REMUSE;
 extern std::string get_binary64(uint64_t b);
 extern ADJACENCY_DIRECTIONS opposite(ADJACENCY_DIRECTIONS ad);
 extern std::string print_direction(int dir);
+extern std::string heuristic_name(HEURISTIC h);
 extern int get_int_prompt(std::string msg);
 #endif /*COMMON_H_*/

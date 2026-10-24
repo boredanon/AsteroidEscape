@@ -1,4 +1,5 @@
 #include "Common.h"
+#include <limits>
 
 int GOAL_POSITION = 10;
 int PIECES_AMOUNT = 9;
@@ -105,6 +106,20 @@ std::string print_direction(int dir)
     return s;
 }
 
+std::string heuristic_name(HEURISTIC h)
+{
+    switch(h)
+    {
+        case ZERO: return "ZERO";
+        case TWOONE: return "TWOONE";
+        case OBSTACLES0: return "OBSTACLES0";
+        case OBSTACLES1: return "OBSTACLES1";
+        case DISTANCE: return "DISTANCE";
+        case ROWDISTANCE: return "ROWDISTANCE";
+        default: return "UNKNOWN";
+    }
+}
+
 int get_int_prompt(std::string msg)
 {
     int prompt = 0;
@@ -112,6 +127,11 @@ int get_int_prompt(std::string msg)
     std::cout << ">> ";
     while (!(std::cin >> prompt))
     {
+        if(std::cin.eof()){
+            return -1; // No more input.
+        }
+        std::cin.clear(); // Discard the non-numeric input and ask again.
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << ">> ";
     }
 

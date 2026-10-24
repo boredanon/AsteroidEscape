@@ -51,7 +51,7 @@ std::stack<std::pair<int,double>> Game::reconstruct_path2(State* g, std::stack<s
 
 std::string Game::print_board() const
 {
-    return s->print_board() + "\n\n" + s->print_board2() + "\n\n";
+    return s->print_board();
 }
 
 bool Game::BFS()
@@ -422,6 +422,7 @@ bool Game::Astar()
     open_s.insert(c);
     open.push(c);
     visited_map[c] = std::make_pair(s, -1);
+    nodes = 0;
     auto start = std::chrono::high_resolution_clock::now();
     while(!open.empty())
     {
@@ -621,17 +622,22 @@ bool Game::human_player(){
         }
         std::cout << " " << moves.size() << ": Give up )"<< std::endl;
 
-        unsigned int pick=0;
+        int n_moves = (int)moves.size();
+        int pick=0;
         do{
             pick = ::get_int_prompt("Pick your move ");
+            if(pick == -1 && std::cin.eof()){
+                pick = n_moves; // End of input: give up.
+                break;
+            }
 
-            if(pick > moves.size()){
+            if(pick < 0 || pick > n_moves){
                 std::cout << "Invalid move." << std::endl;
             }
 
-        }while(pick > moves.size());
+        }while(pick < 0 || pick > n_moves);
 
-        if(pick == moves.size()){
+        if(pick == n_moves){
             break;
         }
 
@@ -736,8 +742,8 @@ double Game::minimum_path_entropy(State* s, int g)
         delete child;
     }
     
-    bool all_zeros = std::all_of(child_entropies.begin(), child_entropies.end(), [](double i){return i == 0.0;});
-    /*if(all_zeros){
+    /*bool all_zeros = std::all_of(child_entropies.begin(), child_entropies.end(), [](double i){return i == 0.0;});
+    if(all_zeros){
         return s->calculate_entropy(child_entropies);
     }*/
 
