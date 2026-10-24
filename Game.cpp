@@ -1,9 +1,13 @@
 
 #include "Game.h"
+#include <sstream>   // INSTRUMENTATION
+#include <algorithm> // INSTRUMENTATION
+#include <cmath>     // INSTRUMENTATION
 
 Game::Game(std::string positions, std::string orientations)
 {
     s = new State(positions, orientations);
+    initial_positions = positions;   // INSTRUMENTATION
 }
 
 std::vector<int> Game::reconstruct_path(State* goal)
@@ -412,6 +416,7 @@ bool Game::Astar()
 {
     std::cout << "Running A*..." << std::endl;
 
+    metrics = SearchMetrics();   // INSTRUMENTATION: reset
 
     std::unordered_set<State*> open_s;
     std::priority_queue<State*, std::vector<State*>, Comparator> open;
@@ -448,15 +453,30 @@ bool Game::Astar()
             std::cout << "Nodes per second: " << (double)nodes/(diff/1000.0) << std::endl;
             std::cout << "All iterations: " << nodes << std::endl;
 
+            // ===== INSTRUMENTATION: store search metrics =====
+            metrics.solved = true;
+            metrics.solver_time = std::chrono::duration<double>(end-start).count();
+            metrics.movements = (int)path.size();
+            metrics.closed_list = (long)closed.size();
+            metrics.open_list = (long)open_s.size();
+            if(metrics.real_min < 0){ metrics.real_min = metrics.real_max = 0; }
+            if(metrics.eff_min < 0){ metrics.eff_min = metrics.eff_max = 0; }
+            compute_solution_metrics(st);
+            compute_structural_metrics();
+            // =================================================
+
             //delete st;
             //delete copy;
             return true;
         }
 
         auto moves = st->get_legal_moves();
+        int real_this = 0, eff_this = 0;   // INSTRUMENTATION: successors of this expansion
+        metrics.expanded++;                // INSTRUMENTATION
         for(const auto& m: moves)
         {
             nodes++;
+            real_this++; metrics.real_total++;   // INSTRUMENTATION
             auto copy = new State(*st);
             copy->move(m);
             //std::cout << copy->print_board() << std::endl;
@@ -464,6 +484,7 @@ bool Game::Astar()
                 visited_map[copy] = std::make_pair(st, m.second);
             }
             else{
+                metrics.repeated++;              // INSTRUMENTATION: already generated
                 delete copy;
                 continue;
             }
@@ -485,6 +506,7 @@ bool Game::Astar()
                 }
 
                 closed.erase(copy);
+                metrics.reopened++;              // INSTRUMENTATION
             }
 
             copy->g = new_g;
@@ -492,7 +514,14 @@ bool Game::Astar()
             
             open_s.insert(copy);
             open.push(copy);
+            eff_this++; metrics.eff_total++;     // INSTRUMENTATION: new successor
         }
+        // ===== INSTRUMENTATION: per-expansion min/max =====
+        if(metrics.real_min < 0 || real_this < metrics.real_min) metrics.real_min = real_this;
+        if(real_this > metrics.real_max) metrics.real_max = real_this;
+        if(metrics.eff_min < 0 || eff_this < metrics.eff_min) metrics.eff_min = eff_this;
+        if(eff_this > metrics.eff_max) metrics.eff_max = eff_this;
+        // ==================================================
         closed.insert(st);
         //return;
     }
@@ -500,6 +529,121 @@ bool Game::Astar()
     std::cout << "No solution found." << std::endl;
     return false;
 }
+
+// ===== INSTRUMENTATION: metrics along the solution path =====
+// For each state of the solution path (initial state up to the state before the goal), the legal
+// moves are generated; a successor is "effective" if it has not been generated before along the
+// path, and "repeated" otherwise.
+void Game::compute_solution_metrics(State* goal)
+{
+    std::vector<State*> path_states;
+    State* t = goal;
+    while(visited_map[t].second != -1){
+        t = visited_map[t].first;
+        path_states.push_back(t);
+    }
+    std::reverse(path_states.begin(), path_states.end());
+
+    std::unordered_set<State*> seen;
+    std::vector<State*> owned;
+    for(State* ps : path_states){
+        auto moves = ps->get_legal_moves();
+        int real_this = (int)moves.size(), eff_this = 0;
+        for(const auto& m : moves){
+            auto child = new State(*ps);
+            child->move(m);
+            if(seen.find(child) != seen.end()){
+                metrics.sol_repeated++;
+                delete child;
+                continue;
+            }
+            seen.insert(child); owned.push_back(child);
+            eff_this++;
+        }
+        metrics.sol_real_total += real_this;
+        metrics.sol_eff_total += eff_this;
+        if(metrics.sol_real_min < 0 || real_this < metrics.sol_real_min) metrics.sol_real_min = real_this;
+        if(real_this > metrics.sol_real_max) metrics.sol_real_max = real_this;
+        if(metrics.sol_eff_min < 0 || eff_this < metrics.sol_eff_min) metrics.sol_eff_min = eff_this;
+        if(eff_this > metrics.sol_eff_max) metrics.sol_eff_max = eff_this;
+    }
+    for(auto o : owned) delete o;
+    if(metrics.sol_real_min < 0){ metrics.sol_real_min = metrics.sol_real_max = 0; }
+    if(metrics.sol_eff_min < 0){ metrics.sol_eff_min = metrics.sol_eff_max = 0; }
+}
+
+// Structural features of the initial board.
+// Slots are numbered 0..8 row-major; the exit is below slot 7 (row 2, column 1).
+void Game::compute_structural_metrics()
+{
+    const std::string& p = initial_positions;
+    int ship = (int)p.find('A'), empty = (int)p.find('-');
+    if(ship < 0 || ship > 8) return;
+    int sr = ship / 3, sc = ship % 3;
+    metrics.A1_ship_exit_distance = std::abs(sr - 2) + std::abs(sc - 1);
+    metrics.A2_exit_blockers = 0;
+    for(int r = sr + 1; r < 3; r++) if(p[r * 3 + 1] != '-') metrics.A2_exit_blockers++;
+    if(empty >= 0 && empty <= 8) metrics.A3_empty_ship_distance = std::abs(sr - empty / 3) + std::abs(sc - empty % 3);
+    const int dr[4] = {1, -1, 0, 0}, dc[4] = {0, 0, 1, -1};
+    metrics.A4_asteroids_around_ship = 0;
+    for(int k = 0; k < 4; k++){
+        int r = sr + dr[k], c = sc + dc[k];
+        if(r >= 0 && r < 3 && c >= 0 && c < 3){
+            char t = p[r * 3 + c];
+            if(t == 'B' || t == 'C') metrics.A4_asteroids_around_ship++;
+        }
+    }
+}
+
+std::string Game::metrics_report() const
+{
+    // One "name: value" line per metric, in the same order as the CSV columns.
+    std::string header = metrics_csv_header(), row = metrics_csv_row("-");
+    std::ostringstream o;
+    o << "===== Metrics =====\n";
+    size_t hp = 0, rp = 0;
+    while(hp != std::string::npos){
+        size_t hn = header.find(';', hp), rn = row.find(';', rp);
+        o << header.substr(hp, hn == std::string::npos ? std::string::npos : hn - hp) << ": "
+          << row.substr(rp, rn == std::string::npos ? std::string::npos : rn - rp) << "\n";
+        hp = (hn == std::string::npos) ? hn : hn + 1;
+        rp = (rn == std::string::npos) ? rn : rn + 1;
+    }
+    return o.str();
+}
+
+std::string Game::metrics_csv_header()
+{
+    return "title;solver_time;movements;br_expanded_nodes;br_real_total_children;br_eff_total_children;"
+           "br_repeated;br_reopened;open_list;closed_list;br_real_avg;br_real_min;br_real_max;"
+           "br_eff_avg;br_eff_min;br_eff_max;br_classic;br_redundancy;"
+           "sol_br_real_total_children;sol_br_real_avg;sol_br_real_min;sol_br_real_max;"
+           "sol_br_eff_total_children;sol_br_eff_avg;sol_br_eff_min;sol_br_eff_max;"
+           "sol_br_repeated;sol_br_redundancy;"
+           "A1_ship_exit_distance;A2_exit_blockers;A3_empty_ship_distance;A4_asteroids_around_ship";
+}
+
+std::string Game::metrics_csv_row(const std::string& title) const
+{
+    const SearchMetrics& M = metrics;
+    auto ratio = [](double a, double b){ return b > 0 ? a / b : 0.0; };
+    double classic = (M.movements > 0 && M.expanded > 0) ? std::pow((double)M.expanded, 1.0 / M.movements) : 0.0;
+    std::ostringstream o;
+    o.precision(6);
+    o << title << ';' << M.solver_time << ';' << M.movements << ';' << M.expanded << ';'
+      << M.real_total << ';' << M.eff_total << ';' << M.repeated << ';' << M.reopened << ';'
+      << M.open_list << ';' << M.closed_list << ';'
+      << ratio(M.real_total, M.expanded) << ';' << M.real_min << ';' << M.real_max << ';'
+      << ratio(M.eff_total, M.expanded) << ';' << M.eff_min << ';' << M.eff_max << ';'
+      << classic << ';' << ratio(M.real_total, M.repeated) << ';'
+      << M.sol_real_total << ';' << ratio(M.sol_real_total, M.movements) << ';' << M.sol_real_min << ';' << M.sol_real_max << ';'
+      << M.sol_eff_total << ';' << ratio(M.sol_eff_total, M.movements) << ';' << M.sol_eff_min << ';' << M.sol_eff_max << ';'
+      << M.sol_repeated << ';' << ratio(M.sol_real_total, M.sol_repeated) << ';'
+      << M.A1_ship_exit_distance << ';' << M.A2_exit_blockers << ';'
+      << M.A3_empty_ship_distance << ';' << M.A4_asteroids_around_ship;
+    return o.str();
+}
+// ============================================================
 
 bool Game::IDAstar()
 {
